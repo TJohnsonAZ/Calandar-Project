@@ -13,10 +13,10 @@ public class CalendarController {
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
 
-	@GetMapping("/next")
-	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template, name));
-	}
+//	@GetMapping("/next")
+//	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+//		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+//	}
 	
 	@GetMapping("/next")
 	public Greeting hello(@RequestParam(value = "name", defaultValue = "World") String name) {
