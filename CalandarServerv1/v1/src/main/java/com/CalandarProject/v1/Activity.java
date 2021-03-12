@@ -3,8 +3,8 @@ package com.CalandarProject.v1;
 public class Activity {
 	
 	private String activityName;
-	private int completeColor = 0x000000;
-	private int notCompleteColor = 0x000000;
+	private int completeColor;
+	private int notCompleteColor;
 	private static int activityID = 1;
 	private Counter counter;
 	
@@ -16,6 +16,14 @@ public class Activity {
 		counter = newCounter;
 		activityID++;
 		
+	}
+	
+	public Activity( ) {
+		activityName = "New Activity" + activityID;
+		notCompleteColor = 0xFFFFFF;
+		completeColor = 0x000000;
+		counter = new Counter();
+		activityID++;
 	}
 	
 	public String getActivityName() {
@@ -43,6 +51,7 @@ public class Activity {
 	}
 	
 	static Activity getActivityWithID( int id ) {
+		
 		return new Activity();
 	}
 }
