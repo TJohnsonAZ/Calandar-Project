@@ -6,6 +6,12 @@ public class Counter {
 	private String unitsForActivity;
 	private int daysBetweenCounts;
 	
+	public Counter( ) {
+		runningTotal = 0;
+		unitsForActivity = "";
+		daysBetweenCounts = 1;
+	}
+	
 	public Counter( String units, int daysBetween ) {
 		runningTotal = 0;
 		unitsForActivity = units;
