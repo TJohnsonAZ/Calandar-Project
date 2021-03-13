@@ -5,12 +5,13 @@ public class Month{
 				"MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER" };	
 		
 		private String month;
+		private String firstDayOfMonth;
 		private int numDays;
 		private int year;
 	
-		public Month( String monthName ) {
+		public Month( String monthName, int yearInt ) {
 			month = monthName;
-			year = 2020;
+			year = yearInt;
 			numDays = daysInMonth( month, year );
 		}
 	
@@ -42,6 +43,14 @@ public class Month{
 	
 		public int getYear() {
 			return year;
+		}
+		
+		public String getMonthName() {
+			return month;
+		}
+		
+		public void setFirstDayOfMonth( String day ) {
+			firstDayOfMonth = day;
 		}
 	}
 
