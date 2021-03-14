@@ -9,17 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CalendarController {
-
-	private static final String template = "Hello, %s!";
-	private final AtomicLong counter = new AtomicLong();
-
-//	@GetMapping("/next")
-//	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-//		return new Greeting(counter.incrementAndGet(), String.format(template, name));
-//	}
 	
-	@GetMapping("/next")
-	public Greeting hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+	@GetMapping("/getMonth")
+	public Month nextMonth( @RequestParam(value = "monthName", defaultValue = "January") String monthName,
+							@RequestParam( value = "year", defaultValue = "2020" ) int year ) {
+		return V1Application.calendar.findMonth( monthName, year );
 	}
+	
 }
