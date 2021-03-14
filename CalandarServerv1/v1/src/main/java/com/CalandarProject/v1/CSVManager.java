@@ -1,25 +1,29 @@
 package com.CalandarProject.v1;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.springframework.stereotype.Component;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 
+@Component
 public class CSVManager {
 
-	/**
-	 * Line by Line writing
-	 * could be edited to overwrite specific lines
-	 */
-	public static void writeToCSV(String filePath) {
-		File file = new File(filePath);
+	private static final String file = "backupData.csv";
+	
+	@PreDestroy
+	public void writeToCSV() {
 		
 		try {
+			
 			FileWriter outputFile = new FileWriter(file);
 			
 			CSVWriter writer = new CSVWriter(outputFile);
@@ -27,10 +31,13 @@ public class CSVManager {
 			String[] header = { "Event ID", "Event Color", "Event Name" };
 			writer.writeNext(header);
 			
-			String[] event1 = { "1", "Blue", "Jog" };
-			writer.writeNext(event1);
-			String[] event2 = { "2", "Purple", "Laundry" };
-			writer.writeNext(event2);
+			for(int i = 0; i < 10; i++) {
+				ActivityDatabase.addEvent(new Event("green", "Test Event " + i));
+			}
+			
+			for(Event event : ActivityDatabase.getAllEvents()) {
+				writer.writeNext(event.toStringArray());
+			}
 			
 			writer.close();
 			
@@ -40,32 +47,28 @@ public class CSVManager {
 		}
 	}
 	
-	
-	// Java code to illustrate reading a 
-	// all data at once 
-	public static void readAllDataAtOnce(String file) { 
-		try { 
-			// Create an object of file reader 
-			// class with CSV file as a parameter. 
+	@PostConstruct
+	public void readAllDataAtOnce() { 
+		try {
+			
 			FileReader filereader = new FileReader(file); 
 
-			// create csvReader object and skip first Line 
 			CSVReader csvReader = new CSVReaderBuilder(filereader) 
 									.withSkipLines(1) 
 									.build(); 
 			List<String[]> allData = csvReader.readAll(); 
-
-			// print Data 
-			for (String[] row : allData) { 
-				for (String cell : row) { 
-					System.out.print(cell + "\t"); 
-				} 
-				System.out.println(); 
-			} 
-		} 
+			
+			for(String[] row : allData) {
+				Event newEvent = new Event(row[0], row[1], row[2]);
+				System.out.println(newEvent);
+				ActivityDatabase.addEvent(newEvent);
+			}
+			
+			csvReader.close();
+		}
 		catch (Exception e) { 
 			e.printStackTrace(); 
 		} 
 	} 
-
+ 
 }
