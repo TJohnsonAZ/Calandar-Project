@@ -28,15 +28,11 @@ public class CSVManager {
 			
 			CSVWriter writer = new CSVWriter(outputFile);
 			
-			String[] header = { "Event ID", "Event Color", "Event Name" };
+			String[] header = { "Activity ID", "Activity Color", "Activity Name, Activity Description, Activity Complete" };
 			writer.writeNext(header);
 			
-			for(int i = 0; i < 10; i++) {
-				ActivityDatabase.addEvent(new Event("green", "Test Event " + i));
-			}
-			
-			for(Event event : ActivityDatabase.getAllEvents()) {
-				writer.writeNext(event.toStringArray());
+			for(Activity activity : ActivityDatabase.getAllEvents()) {
+				writer.writeNext(activity.toStringArray());
 			}
 			
 			writer.close();
@@ -59,9 +55,9 @@ public class CSVManager {
 			List<String[]> allData = csvReader.readAll(); 
 			
 			for(String[] row : allData) {
-				Event newEvent = new Event(row[0], row[1], row[2]);
-				System.out.println(newEvent);
-				ActivityDatabase.addEvent(newEvent);
+				Activity newActivity = new Activity(row[0], row[1], row[2], row[3], row[4]);
+				System.out.println(newActivity);
+				ActivityDatabase.addActivity(newActivity);
 			}
 			
 			csvReader.close();

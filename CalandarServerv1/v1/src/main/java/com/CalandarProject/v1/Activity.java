@@ -1,57 +1,74 @@
 package com.CalandarProject.v1;
 
+import java.util.UUID;
+
 public class Activity {
 	
+	private String activityID;
 	private String activityName;
-	private int completeColor;
-	private int notCompleteColor;
-	private static int activityID = 1;
+	private String activityColor;
+	private String activityDescription;
+	private String activityComplete;
 	private Counter counter;
 	
-	
-	public Activity( String name, int color, int endColor, Counter newCounter ) {
-		activityName = name;
-		notCompleteColor = color;
-		completeColor = endColor;
-		counter = newCounter;
-		activityID++;
-		
+	public Activity(String activityName, String activityColor, String activityDescription, String activityComplete) {
+		this(UUID.randomUUID().toString(), activityName, activityColor, activityDescription, activityComplete);
 	}
 	
-	public Activity( ) {
-		activityName = "New Activity" + activityID;
-		notCompleteColor = 0xFFFFFF;
-		completeColor = 0x000000;
-		counter = new Counter();
-		activityID++;
+	public Activity(String activityID, String activityName, String activityColor, String activityDescription,  String activityComplete) {
+		this.activityID = activityID;
+		this.activityName = activityName;
+		this.activityDescription = activityDescription;
+		this.activityColor = activityColor;
+		this.activityComplete = activityComplete;
 	}
 	
 	public String getActivityName() {
 		return activityName;
 	}
 	
-	public int getCompleteColor() {
-		return completeColor;
+	public String getActivityColor() {
+		return activityColor;
 	}
 	
-	public int getNotCompleteColor() {
-		return notCompleteColor;
-	}
-	
-	public int getActivityID() {
+	public String getActivityID() {
 		return activityID;
 	}
 	
-	public void saveActivity() {
-		
+	public String getActivityDescription() {
+		return activityDescription;
 	}
 	
-	static void returnAllActivities() {
-		
+	public String getActivityComplete() {
+		return activityComplete;
 	}
 	
-	static Activity getActivityWithID( int id ) {
-		
-		return new Activity();
+	public void setActivityColor(String color) {
+		this.activityColor = color;
 	}
+	
+	public void setActivityName(String name) {
+		this.activityName = name;
+	}
+	
+	public void setActivityDescription(String description) {
+		this.activityDescription = description;
+	}
+
+	public void setActivityComplete(String status) {
+		this.activityComplete = status;
+	}
+	
+	@Override
+	public String toString() {
+		return "Activity [activityID=" + activityID + ", activityName=" + activityName + ", activityColor="
+				+ activityColor + ", activityDescription=" + activityDescription + ", activityComplete="
+				+ activityComplete + "]";
+	}
+
+	public String[] toStringArray() {
+		return new String[] {String.valueOf(activityID), activityName, activityColor, activityDescription, activityComplete};
+	}
+	
+	
 }
