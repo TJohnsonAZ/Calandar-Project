@@ -7,25 +7,25 @@ public class Counter {
 	private int daysBetweenCounts;
 	
 	public Counter( ) {
-		runningTotal = 0;
-		unitsForActivity = "";
-		daysBetweenCounts = 1;
+		this.runningTotal = 0;
+		this.unitsForActivity = "";
+		this.daysBetweenCounts = 1;
 	}
 	
 	public Counter( String units, int daysBetween ) {
-		runningTotal = 0;
-		unitsForActivity = units;
-		daysBetweenCounts = daysBetween;
+		this.runningTotal = 0;
+		this.unitsForActivity = units;
+		this.daysBetweenCounts = daysBetween;
 	}
 	
 
 	public void setUnitsForActivity( String units ) {
-		unitsForActivity = units;
+		this.unitsForActivity = units;
 	}
 	
 	
 	public void setDaysBetweenCounts( int daysBetween) {
-		daysBetweenCounts = daysBetween;
+		this.daysBetweenCounts = daysBetween;
 	}
 	
 	public void incrementTotal() {

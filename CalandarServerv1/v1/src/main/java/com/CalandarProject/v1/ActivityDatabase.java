@@ -5,27 +5,27 @@ import java.util.List;
 
 public class ActivityDatabase {
 
-	private static List<Event> data = new ArrayList<Event>();
+	private static List<Activity> data = new ArrayList<Activity>();
 	
-	public static void addEvent(Event addedEvent) {
-		data.add(addedEvent);
+	public static void addActivity(Activity activity) {
+		data.add(activity);
 	}
 	
-	public static void deleteEvent(Event removedEvent) {
-		data.remove(removedEvent);
+	public static void deleteActivity(Activity activity) {
+		data.remove(activity);
 	}
 	
-	public static void updateEvent(Event updatedEvent) {
+	public static void updateActivity(Activity activity) {
 		for(int i = 0; i < data.size(); i++) {
-			if(updatedEvent.getId() == data.get(i).getId()) {
-				Event event = data.get(i);
-				event.setColor(updatedEvent.getColor());
-				event.setDescription(updatedEvent.getDescription());
+			if(activity.getActivityID() == data.get(i).getActivityID()) {
+				Activity a = data.get(i);
+				a.setActivityColor(activity.getActivityColor());
+				a.setActivityDescription(activity.getActivityDescription());
 			}
 		}
 	}
 	
-	public static List<Event> getAllEvents() {
+	public static List<Activity> getAllEvents() {
 		return data;
 	}
 	
