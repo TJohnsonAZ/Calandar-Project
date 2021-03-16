@@ -26,11 +26,20 @@ public class Calendar {
 			previousMonth = null;
 		}
 		
-		
+		public void findFirstDay() {
+			int previousFirstDay;
+			int previousNumDays;
+			if( previousMonth != null ) {
+				previousFirstDay = previousMonth.monthData.getFirstDayNum();
+				previousNumDays = previousMonth.monthData.getNumDays();
+				monthData.setFirstDayOfMonth( (previousFirstDay + previousNumDays) % 7 );
+			}
+				
+		}
 		
 	}
 	
-	private final String[] MONTH_LIST = {"JANUARY", "FEBUARY", "MARCH", "APRIL", "MAY", "JUNE",
+	private final String[] MONTH_LIST = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
 							"JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"};
 	private MonthNode headNode;
 	private MonthNode tailNode;
@@ -43,37 +52,40 @@ public class Calendar {
 	//appends to the list of months
 	public void addMonth( ) {
 		MonthNode newMonth;
+		int monthNum;
 		if( headNode == null ) {
 			newMonth = new MonthNode( MONTH_LIST[0], 2020 );
 			headNode = newMonth;
-		}
-		if( tailNode.monthData.getMonthName() == MONTH_LIST[11] ) {
-			newMonth = new MonthNode( MONTH_LIST[0], tailNode.monthData.getYear() + 1 );
-			tailNode.nextMonth = newMonth;
+			newMonth.monthData.setFirstDayOfMonth( 2 );
 		}
 		else {
-			String monthName = tailNode.monthData.getMonthName();
-			int monthNum = findMonthNum( monthName );
-			
-			newMonth = new MonthNode( MONTH_LIST[ monthNum + 1 ], tailNode.monthData.getYear() );
-			tailNode.nextMonth = newMonth;
+			if( tailNode.monthData.getMonthName().equals(MONTH_LIST[11]) ) {
+				newMonth = new MonthNode( MONTH_LIST[0], tailNode.monthData.getYear() + 1 );
+				tailNode.nextMonth = newMonth;
+			}
+			else {
+				monthNum = tailNode.monthData.getMonthNum();			
+				newMonth = new MonthNode( MONTH_LIST[ monthNum + 1 ], tailNode.monthData.getYear() );
+				tailNode.nextMonth = newMonth;
+			}
+			newMonth.previousMonth = tailNode;
+			newMonth.findFirstDay();
 		}
 		tailNode = newMonth;
 	}
-	
-	private int findMonthNum( String month ) {
-		int index;
-		for( index = 0; index < MONTH_LIST.length; index++ ) {
-			if ( month.equals( MONTH_LIST[ index ] )){
-				return index;
-			}
-		}
-		//error statement
-		return -99999999;
-	}
 
-	//TODO
 	public Month findMonth( String monthName, int year ) {
-		return headNode.monthData;
+		if( headNode == null ) {
+			addMonth();
+		}
+		MonthNode currentNode = headNode;
+		Month tmpMonth = new Month( monthName, year );
+		while( currentNode.monthData.getMonthNum() != tmpMonth.getMonthNum() || currentNode.monthData.getYear() != year) {
+			if( currentNode.nextMonth == null ) {
+				addMonth();
+			}
+			currentNode = currentNode.nextMonth;
+		}
+		return currentNode.monthData;
 	}
 }
