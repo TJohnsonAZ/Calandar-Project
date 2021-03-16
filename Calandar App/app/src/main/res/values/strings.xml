@@ -2,5 +2,9 @@
 
     <string name="app_name">Calandar App</string>
     <string name="blank_day"> </string>
+    <string name="welcome_screen_text">Welcome to Calandar Project Calandar!</string>
+    <string name="create_cal_bttn_main">Create My First Calandar!</string>
+    <string name="enter_cal_name_field">Type the Name of Your Calandar Here!</string>
+    <string name="no_selection_text">No Selection</string>
 
 </resources>

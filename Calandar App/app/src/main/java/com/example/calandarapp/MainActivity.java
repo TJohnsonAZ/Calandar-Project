@@ -1,6 +1,8 @@
 package com.example.calandarapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        String calandarNameFromUser = intent.getStringExtra(MainMenu.CALNAME_MESSAGE);
+        Log.d("Cal name", " " + calandarNameFromUser);
+
+        TextView calandarNameTitle = (TextView)findViewById(R.id.calendarName);
+        calandarNameTitle.setText("Activity: " + calandarNameFromUser);
 
         addIdsToDayId();
         monthName = findViewById(R.id.monthYear);
@@ -73,13 +82,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    /*
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.name, popup.getMenu());
         popup.show();
     }
+    */
+
 
     public void nextMonth(View view)
     {

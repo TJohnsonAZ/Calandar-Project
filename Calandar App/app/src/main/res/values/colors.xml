@@ -147,4 +147,6 @@
         <color name="DarkBlue">#00008B</color>
         <color name="Navy">#000080</color>
         <color name="Black">#000000</color>
+        <color name="BlackTransparent">#65000000</color>
+        <color name="MainMenuBlueColor">#01F3BE</color>
     </resources>
