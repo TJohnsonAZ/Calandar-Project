@@ -19,7 +19,8 @@ public class CalendarController {
 	@GetMapping("/getMonth")
 	public Month nextMonth( @RequestParam(value = "monthName", defaultValue = "JANUARY") String monthName,
 							@RequestParam( value = "year", defaultValue = "2020" ) int year ) {
-		return calendar.findMonth( monthName, year );
+		String capsMonth = monthName.toUpperCase();
+		return calendar.findMonth( capsMonth, year );
 	}
 	
 }
