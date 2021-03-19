@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/LightGrey"
+    tools:context=".MainMenu">
+
+    <TextView
+        android:id="@+id/WelcomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:background="@color/MainMenuBlueColor"
+        android:gravity="center"
+        android:text="@string/welcome_screen_text"
+        android:textColor="@color/Black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.147" />
+
+    <Button
+        android:id="@+id/CreateFirstCalButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/MainMenuBlueColor"
+        android:text="@string/create_cal_bttn_main"
+        android:textColor="@color/Black"
+        app:backgroundTint="@color/MainMenuBlueColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WelcomeTextView"
+        android:onClick="createCalandarGivenName" />
+
+    <EditText
+        android:id="@+id/nameCalandarTextField"
+        android:layout_width="352dp"
+        android:layout_height="60dp"
+        android:background="@color/LightBlue"
+        android:editable="false"
+        android:ems="10"
+        android:gravity="center"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:textColor="@color/BlackTransparent"
+        app:layout_constraintBottom_toTopOf="@+id/CreateFirstCalButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WelcomeTextView"
+        app:layout_constraintVertical_bias="0.77"
+        android:hint="@string/enter_cal_name_field"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
