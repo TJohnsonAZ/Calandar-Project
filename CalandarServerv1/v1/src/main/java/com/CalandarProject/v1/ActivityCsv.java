@@ -15,9 +15,9 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 
 @Component
-public class CSVManager {
+public class ActivityCsv {
 
-	private static final String file = "backupData.csv";
+	private static final String file = "ActivityData.csv";
 	
 	@PreDestroy
 	public void writeToCSV() {
@@ -28,10 +28,10 @@ public class CSVManager {
 			
 			CSVWriter writer = new CSVWriter(outputFile);
 			
-			String[] header = { "Activity ID", "Activity Color", "Activity Name, Activity Description, Activity Complete" };
+			String[] header = {"Activity ID", "Activity Name", "Activity Color", "Activity Description", "Activity Complete"};
 			writer.writeNext(header);
 			
-			for(Activity activity : ActivityDatabase.getAllEvents()) {
+			for(Activity activity : ActivityDatabase.getAllActivities()) {
 				writer.writeNext(activity.toStringArray());
 			}
 			

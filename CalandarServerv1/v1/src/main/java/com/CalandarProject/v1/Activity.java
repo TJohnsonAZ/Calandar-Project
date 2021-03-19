@@ -11,6 +11,10 @@ public class Activity {
 	private String activityComplete;
 	private Counter counter;
 	
+	public Activity() {
+		this.activityID = UUID.randomUUID().toString();
+	}
+
 	public Activity(String activityName, String activityColor, String activityDescription, String activityComplete) {
 		this(UUID.randomUUID().toString(), activityName, activityColor, activityDescription, activityComplete);
 	}
