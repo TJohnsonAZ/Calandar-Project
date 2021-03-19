@@ -7,25 +7,36 @@ public class ActivityDatabase {
 
 	private static List<Activity> data = new ArrayList<Activity>();
 	
-	public static void addActivity(Activity activity) {
+	public static Activity addActivity(Activity activity) {
 		data.add(activity);
+		return activity;
 	}
 	
-	public static void deleteActivity(Activity activity) {
+	public static Activity deleteActivity(String id) {
+		Activity activity = getActivity(id);
 		data.remove(activity);
+		return activity;
 	}
 	
-	public static void updateActivity(Activity activity) {
+	public static Activity updateActivity(String id, Activity activity) {
+		Activity a = getActivity(id);
+		if(a != null) {
+			a.setActivityColor(activity.getActivityColor());
+			a.setActivityDescription(activity.getActivityDescription());
+		}
+		return a;
+	}
+	
+	public static Activity getActivity(String id) {
 		for(int i = 0; i < data.size(); i++) {
-			if(activity.getActivityID() == data.get(i).getActivityID()) {
-				Activity a = data.get(i);
-				a.setActivityColor(activity.getActivityColor());
-				a.setActivityDescription(activity.getActivityDescription());
+			if(data.get(i).getActivityID().equals(id)) {
+				return data.get(i);
 			}
 		}
+		return null;
 	}
 	
-	public static List<Activity> getAllEvents() {
+	public static List<Activity> getAllActivities() {
 		return data;
 	}
 	
