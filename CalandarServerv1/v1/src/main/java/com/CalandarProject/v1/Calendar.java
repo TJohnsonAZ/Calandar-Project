@@ -8,6 +8,7 @@ public class Calendar {
 		public MonthNode nextMonth;
 		public MonthNode previousMonth;
 		
+		//useless worthless class constructor
 		public MonthNode() {
 			monthData = null;
 			nextMonth = null;
@@ -26,6 +27,10 @@ public class Calendar {
 			previousMonth = null;
 		}
 		
+		/**
+		 * finds the first day of each month using the previous month's data. 
+		 * Note: requires a first, hard-coded element
+		 */
 		public void findFirstDay() {
 			int previousFirstDay;
 			int previousNumDays;
@@ -49,7 +54,9 @@ public class Calendar {
 		tailNode = null;
 	}
 	
-	//appends to the list of months
+	/**
+	 * 
+	 */
 	public void addMonth( ) {
 		MonthNode newMonth;
 		int monthNum;
