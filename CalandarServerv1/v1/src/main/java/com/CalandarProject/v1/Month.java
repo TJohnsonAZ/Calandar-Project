@@ -12,6 +12,11 @@ public class Month{
 		private int monthNum;
 		private int firstDayNum;
 	
+		/**
+		 * Month constructor
+		 * @param monthName Name of the month
+		 * @param yearInt Year of the month you want to find
+		 */
 		public Month( String monthName, int yearInt ) {
 			month = monthName;
 			year = yearInt;
@@ -19,6 +24,11 @@ public class Month{
 			monthNum = findMonthNum( month );
 		}
 		
+		/**
+		 * Finds the number of a given month to make calculations easier
+		 * @param month Month you want to find the number of 
+		 * @return the number of the month, where 0 is January and 11 is December
+		 */
 		private int findMonthNum( String month ) {
 			int index;
 			for( index = 0; index < MONTHS.length; index++ ) {
@@ -30,6 +40,12 @@ public class Month{
 			return -99999999;
 		}
 	
+		/**
+		 * Finds the days in a given month, primarily for Feburuary
+		 * @param month month that you want to find the number of days for
+		 * @param year the year the month has
+		 * @return the amount of days in the month
+		 */
 		private int daysInMonth( String month, int year ) {
 			switch( month ) {
 
@@ -68,6 +84,10 @@ public class Month{
 			return month;
 		}
 		
+		/**
+		 * Sets the first day of the month. To be used with the MonthNode class
+		 * @param dayNum the day of the week as an integer, 0 is Monday, and 6 is Sunday
+		 */
 		public void setFirstDayOfMonth( int dayNum ) {
 			firstDayNum = dayNum % 7;
 			firstDayOfMonth = DAYS[ firstDayNum ];
