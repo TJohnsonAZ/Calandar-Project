@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CalendarController {
+	
 	public static Calendar calendar = new Calendar();
 	
 	/**
