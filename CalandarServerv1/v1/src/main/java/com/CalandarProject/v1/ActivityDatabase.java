@@ -23,6 +23,8 @@ public class ActivityDatabase {
 		if(a != null) {
 			a.setActivityColor(activity.getActivityColor());
 			a.setActivityDescription(activity.getActivityDescription());
+			a.setActivityName(activity.getActivityName());
+			a.setActivityComplete(activity.getActivityComplete());
 		}
 		return a;
 	}
