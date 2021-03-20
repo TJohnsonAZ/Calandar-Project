@@ -16,7 +16,7 @@ public class Summary {
        }
     }
 
-    public DayData[] getWeekArray() {
+    public DayData[] getsummaryPeriod() {
        return summaryPeriod;
     }
 }
