@@ -9,7 +9,7 @@ public class Summary {
        int index;
        int dayIterator = startDate;
 
-       //create week array starting at given date
+       // populate array with information about days in the given period
        for (index = 0; index < summaryPeriod.length; index++) {
           summaryPeriod[index] = DayDatabase.getDayData(String.valueOf(dayIterator));
           dayIterator++;
