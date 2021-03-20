@@ -2,7 +2,7 @@ package com.CalandarProject.v1;
 
 public class DayData {
 
-	private String dayOfMonth;
+	private String dayOfYear;
 	private String defaultColor;
 	private String incompleteColor;
 	private String completeColor;
@@ -16,7 +16,7 @@ public class DayData {
 	}
 	
 	public DayData(String dayOfMonth, String defaultColor, String incompleteColor, String completeColor, String setColor) {
-		this.dayOfMonth = dayOfMonth;
+		this.dayOfYear = dayOfMonth;
 		this.defaultColor = defaultColor;
 		this.incompleteColor = incompleteColor;
 		this.completeColor = completeColor;
@@ -25,7 +25,7 @@ public class DayData {
 	
 	public DayData(String dayNum) {
 		this();
-		dayOfMonth = dayNum;
+		dayOfYear = dayNum;
 	}
 	
 	public String getDefaultColor() {
@@ -55,18 +55,18 @@ public class DayData {
 		this.setColor = setColor;
 	}
 
-	public String getDayOfMonth() {
-		return dayOfMonth;
+	public String getDayOfYear() {
+		return dayOfYear;
 	}
 	
 	@Override
 	public String toString() {
-		return "DayData [dayOfMonth=" + dayOfMonth + ", defaultColor=" + defaultColor + ", incompleteColor="
+		return "DayData [dayOfYear=" + dayOfYear + ", defaultColor=" + defaultColor + ", incompleteColor="
 				+ incompleteColor + ", completeColor=" + completeColor + ", setColor=" + setColor + "]";
 	}
 
 	public String[] toStringArray() {
-		return new String[] {String.valueOf(dayOfMonth), defaultColor, incompleteColor, completeColor, setColor}; 
+		return new String[] {String.valueOf(dayOfYear), defaultColor, incompleteColor, completeColor, setColor}; 
 	}
 	
 }
