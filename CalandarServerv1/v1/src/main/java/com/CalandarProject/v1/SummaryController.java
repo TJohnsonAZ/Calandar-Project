@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SummaryController {
 
     @GetMapping("/summary")
-    public Summary summary(@RequestParam(value = "startDate") int date) {
-        return new Summary(date);
+    public Summary summary(@RequestParam(value = "startDate") int start,
+                           @RequestParam(value = "endDate") int end) {
+        return new Summary(start, end);
     }
 }
