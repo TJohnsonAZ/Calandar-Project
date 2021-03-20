@@ -5,7 +5,7 @@ public class Summary {
     DayData[] summaryPeriod;
 
     public Summary(int startDate, int endDate) {
-       summaryPeriod = new DayData[endDate - startDate];
+       summaryPeriod = new DayData[endDate - startDate + 1];
        int index;
        int dayIterator = startDate;
 
