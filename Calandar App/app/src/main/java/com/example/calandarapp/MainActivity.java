@@ -3,17 +3,16 @@ package com.example.calandarapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     Calandar calandar = new Calandar(2021);
 
@@ -42,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         calandarNameTitle.setText("Activity: " + calandarNameFromUser);
 
         addIdsToDayId();
+        setListenersForDays();
+
         monthName = findViewById(R.id.monthYear);
         monthName.setText(calandar.getStartingMonth() + " " + calandar.getCurrentYear());
         int index;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         prevMonth = findViewById(R.id.prevMonth);
         nextMonth = findViewById(R.id.nextMonth);
+
 
         prevMonth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,4 +195,146 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void setListenersForDays()
+    {
+        int index;
+        for(index = 0; index < 42; index++)
+        {
+            dayId.get(index).setOnClickListener(this);
+        }
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.day1:
+                Toast.makeText(this, "Button 1 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day2:
+                Toast.makeText(this, "Button 2 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day3:
+                Toast.makeText(this, "Button 3 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day4:
+                Toast.makeText(this, "Button 4 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day5:
+                Toast.makeText(this, "Button 5 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day6:
+                Toast.makeText(this, "Button 6 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day7:
+                Toast.makeText(this, "Button 7 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day8:
+                Toast.makeText(this, "Button 8 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day9:
+                Toast.makeText(this, "Button 9 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day10:
+                ;
+                Toast.makeText(this, "Button 10 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day11:
+                Toast.makeText(this, "Button 11 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day12:
+                Toast.makeText(this, "Button 12 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day13:
+                Toast.makeText(this, "Button 13 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day14:
+                Toast.makeText(this, "Button 14 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day15:
+                Toast.makeText(this, "Button 15 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day16:
+                Toast.makeText(this, "Button 16 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day17:
+                Toast.makeText(this, "Button 17 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day18:
+                Toast.makeText(this, "Button 18 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day19:
+                Toast.makeText(this, "Button 19 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day20:
+                Toast.makeText(this, "Button 20 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day21:
+                Toast.makeText(this, "Button 21 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day22:
+                Toast.makeText(this, "Button 22 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day23:
+                Toast.makeText(this, "Button 23 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day24:
+                Toast.makeText(this, "Button 24 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day25:
+                Toast.makeText(this, "Button 25 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day26:
+                Toast.makeText(this, "Button 26 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day27:
+                Toast.makeText(this, "Button 27 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day28:
+                Toast.makeText(this, "Button 28 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day29:
+                Toast.makeText(this, "Button 29 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day30:
+                Toast.makeText(this, "Button 30 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day31:
+                Toast.makeText(this, "Button 31 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day32:
+                Toast.makeText(this, "Button 32 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day33:
+                Toast.makeText(this, "Button 33 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day34:
+                Toast.makeText(this, "Button 34 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day35:
+                Toast.makeText(this, "Button 35 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day36:
+                Toast.makeText(this, "Button 36 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day37:
+                Toast.makeText(this, "Button 37 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day38:
+                Toast.makeText(this, "Button 38 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day39:
+                Toast.makeText(this, "Button 39 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day40:
+                Toast.makeText(this, "Button 40 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day41:
+                Toast.makeText(this, "Button 41 clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.day42:
+                Toast.makeText(this, "Button 42 clicked", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 }
