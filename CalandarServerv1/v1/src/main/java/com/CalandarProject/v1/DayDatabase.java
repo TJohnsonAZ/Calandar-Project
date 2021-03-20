@@ -15,14 +15,17 @@ public class DayDatabase {
 	public static DayData updateDayData(String day, DayData dayData) {
 		DayData dd = getDayData(day);
 		if(dd != null) {
-			dd.getSetColor();
+			dd.setSetColor(dayData.getSetColor());;
+			dd.setDefaultColor(dayData.getDefaultColor());
+			dd.setIncompleteColor(dayData.getIncompleteColor());
+			dd.setCompleteColor(dayData.getCompleteColor());
 		}
 		return dd;
 	}
 	
 	public static DayData getDayData(String day) {
 		for(int i = 0; i < data.size(); i++) {
-			if(data.get(i).getDayOfMonth().equals(day)) {
+			if(data.get(i).getDayOfYear().equals(day)) {
 				return data.get(i);
 			}
 		}
