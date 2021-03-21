@@ -1,7 +1,5 @@
 package com.example.calandarapp;
 
-import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -43,8 +41,7 @@ public class Calandar extends AppCompatActivity {
 
     public int getStartingDay(int year, String monthName) {
         calendar.set(year, monthNameToNum.get(monthName), 1);
-        Log.i("Day Of Month", calendar.get(Calendar.DAY_OF_WEEK) + "");
-        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        return calendar.DAY_OF_MONTH;
     }
 
     public void nextMonth() {
