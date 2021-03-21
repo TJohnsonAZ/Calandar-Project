@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/LightGrey"
-    tools:context=".MainMenu">
+    tools:context=".MainMenu"
+    android:id="@+id/mainmenuid">
 
     <TextView
         android:id="@+id/WelcomeTextView"
@@ -17,12 +18,14 @@
         android:textColor="@color/Black"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:onClick = "toastAFuckYou"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.147" />
+
 
     <Button
         android:id="@+id/CreateFirstCalButton"

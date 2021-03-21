@@ -3,13 +3,19 @@ package com.example.calandarapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.view.ViewGroup.LayoutParams;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class MainMenu extends AppCompatActivity {
 
@@ -20,6 +26,7 @@ public class MainMenu extends AppCompatActivity {
     Button nameCalandarBttn;
     Boolean clickedConfirm = false;
     Boolean confirmedChoice = false;
+    TextView welcomeViewTextBox;
 
     public static final String CALNAME_MESSAGE = "CalandarName";
 
@@ -29,6 +36,8 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.main_menue);
 
         nameCalandarBttn = (Button)findViewById(R.id.CreateFirstCalButton);
+        welcomeViewTextBox = (TextView)findViewById(R.id.WelcomeTextView);
+
     }
 
     public void createCalandarGivenName(View view) {
@@ -53,7 +62,7 @@ public class MainMenu extends AppCompatActivity {
 
     public void confirmCalName()
     {
-        //Creating the instance of PopupMenu
+            //Creating the instance of PopupMenu
             PopupMenu popup = new PopupMenu(MainMenu.this, nameCalandarBttn);
             //Inflating the Popup using xml file
             popup.getMenuInflater().inflate(R.menu.confirm_first_cal_name_popup_menu, popup.getMenu());
@@ -109,5 +118,10 @@ public class MainMenu extends AppCompatActivity {
         }
         calandarNameSet = true;
         Log.d("Confirmed", "Name confirmed!!!!");
+    }
+
+    public void toastAFuckYou(View view) {
+        Toast toast = Toast.makeText(this, "Hello Toast", Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
