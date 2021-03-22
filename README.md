@@ -32,7 +32,7 @@ Android studio is necessary for modifying the application code (https://develope
 ### Contributing
 
 ### Versioning
-For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+For the versions available, see the [tags on this repository](https://github.com/TJohnsonAZ/Calandar-Project/tags).
 
 ### Authors
   - Calvin Harper - Android App
