@@ -35,7 +35,7 @@ Deployment of backend is on a remote server and communicates via HTTP requests s
 Please read [CONTRIBUTING.md](https://github.com/TJohnsonAZ/Calandar-Project/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ### Versioning
-For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+For the versions available, see the [tags on this repository](https://github.com/TJohnsonAZ/Calandar-Project/tags).
 
 ### Authors
   - Calvin Harper - Android App
