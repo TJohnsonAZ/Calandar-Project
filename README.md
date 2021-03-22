@@ -32,7 +32,6 @@ Android studio is necessary for modifying the application code (https://develope
 ### Contributing
 
 ### Versioning
-1.3.2
 For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ### Authors
