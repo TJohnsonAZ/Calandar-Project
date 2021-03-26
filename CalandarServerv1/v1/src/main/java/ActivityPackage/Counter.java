@@ -1,4 +1,4 @@
-package com.CalandarProject.v1;
+package ActivityPackage;
 
 public class Counter {
 	

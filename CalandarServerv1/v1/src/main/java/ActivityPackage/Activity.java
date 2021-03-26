@@ -1,4 +1,4 @@
-package com.CalandarProject.v1;
+package ActivityPackage;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package com.CalandarProject.v1;
+package DayPackage;
 
 public class DayData {
 
