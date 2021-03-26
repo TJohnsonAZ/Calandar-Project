@@ -1,7 +1,4 @@
-package SummaryPackage;
-
-import DayPackage.DayData;
-import DayPackage.DayDatabase;
+package com.CalandarProject.v1;
 
 public class Summary {
 

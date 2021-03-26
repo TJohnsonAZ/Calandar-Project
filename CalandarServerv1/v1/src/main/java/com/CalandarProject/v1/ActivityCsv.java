@@ -1,4 +1,4 @@
-package DayPackage;
+package com.CalandarProject.v1;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -15,38 +15,38 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 
 @Component
-public class DayDataCsv {
+public class ActivityCsv {
 
-	private static final String file = "DayData.csv";
-		
+	private static final String file = "ActivityData.csv";
+	
 	@PreDestroy
 	public void writeToCSV() {
-			
+		
 		try {
-				
+			
 			FileWriter outputFile = new FileWriter(file);
 			
 			CSVWriter writer = new CSVWriter(outputFile);
 			
-			String[] header = {"Day of Year", "Default Color", "Incomplete Color", "Complete Color", "Set Color"};
+			String[] header = {"Activity ID", "Activity Name", "Activity Color", "Activity Description", "Activity Complete"};
 			writer.writeNext(header);
-				
-			for(DayData dayData : DayDatabase.getAllDayData()) {
-				writer.writeNext(dayData.toStringArray());
+			
+			for(Activity activity : ActivityDatabase.getAllActivities()) {
+				writer.writeNext(activity.toStringArray());
 			}
-				
+			
 			writer.close();
-				
+			
 		}
 		catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
-		
+	
 	@PostConstruct
 	public void readAllDataAtOnce() { 
 		try {
-				
+			
 			FileReader filereader = new FileReader(file); 
 
 			CSVReader csvReader = new CSVReaderBuilder(filereader) 
@@ -55,15 +55,16 @@ public class DayDataCsv {
 			List<String[]> allData = csvReader.readAll(); 
 			
 			for(String[] row : allData) {
-				DayData newDayData = new DayData(row[0], row[1], row[2], row[3], row[4]);
-				System.out.println(newDayData);
-				DayDatabase.addDayData(newDayData);
+				Activity newActivity = new Activity(row[0], row[1], row[2], row[3], row[4]);
+				System.out.println(newActivity);
+				ActivityDatabase.addActivity(newActivity);
 			}
-				
+			
 			csvReader.close();
 		}
 		catch (Exception e) { 
 			e.printStackTrace(); 
 		} 
-	} 	 
+	} 
+ 
 }

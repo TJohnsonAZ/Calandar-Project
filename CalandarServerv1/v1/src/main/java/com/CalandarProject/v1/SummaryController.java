@@ -1,4 +1,4 @@
-package SummaryPackage;
+package com.CalandarProject.v1;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;

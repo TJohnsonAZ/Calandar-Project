@@ -1,4 +1,4 @@
-package ActivityPackage;
+package com.CalandarProject.v1;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package CalendarPackage;
+package com.CalandarProject.v1;
 
 public class Month{
 		private final String[] MONTHS = { "JANUARY", "FEBRUARY", "MARCH", "APRIL",
