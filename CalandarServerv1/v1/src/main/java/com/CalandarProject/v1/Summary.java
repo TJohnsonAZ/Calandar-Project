@@ -20,7 +20,7 @@ public class Summary {
            summaryPeriod[index] = DayDatabase.getDayData(String.valueOf(dayIterator));
 
           // check for day complete
-          if (summaryPeriod[index].getSetColor() == summaryPeriod[index].getCompleteColor()) {
+          if (summaryPeriod[index].getDayStatus() == 3) {
               completeCounter++;
               currentStreak++;
           }
@@ -36,7 +36,7 @@ public class Summary {
               currentStreak = 0;
 
               // check for day not complete
-              if (summaryPeriod[index].getSetColor() == summaryPeriod[index].getIncompleteColor()) {
+              if (summaryPeriod[index].getDayStatus() == 2) {
                   incompleteCounter++;
               }
 
