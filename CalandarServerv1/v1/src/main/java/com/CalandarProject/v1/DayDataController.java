@@ -28,7 +28,7 @@ public class DayDataController {
 	
 	// update
 	@PutMapping("/dayData")
-	public DayData updateDayData( @RequestParam(value = "id", required = true ) String dayNum,
+	public DayData updateDayData( @RequestParam(value = "dayNum", required = true ) String dayNum,
 									@RequestBody DayData dayData) {
 		return DayDatabase.updateDayData(dayNum, dayData);
 	}

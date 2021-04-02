@@ -12,13 +12,13 @@ public class DayDatabase {
 		return dayData;
 	}
 	
-	public static DayData updateDayData(String day, DayData dayData) {
+	public static DayData updateDayData(String day, DayData dayStatus) {
 		DayData dd = getDayData(day);
 		if(dd != null) {
-			dd.setSetColor(dayData.getSetColor());;
-			dd.setDefaultColor(dayData.getDefaultColor());
-			dd.setIncompleteColor(dayData.getIncompleteColor());
-			dd.setCompleteColor(dayData.getCompleteColor());
+			dd.setActivity1DayStatus(dayStatus.getActivity1DayStatus());
+			dd.setActivity2DayStatus(dayStatus.getActivity2DayStatus());
+			dd.setActivity3DayStatus(dayStatus.getActivity3DayStatus());
+			dd.setActivity4DayStatus(dayStatus.getActivity4DayStatus());
 		}
 		return dd;
 	}

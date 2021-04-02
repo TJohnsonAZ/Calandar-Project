@@ -28,7 +28,7 @@ public class DayDataCsv {
 			
 			CSVWriter writer = new CSVWriter(outputFile);
 			
-			String[] header = {"Day of Year", "Default Color", "Incomplete Color", "Complete Color", "Set Color"};
+			String[] header = {"Day of Year", "Activity1 Status", "Activity2 Status", "Activity3 Status", "Activity4 Status"};
 			writer.writeNext(header);
 				
 			for(DayData dayData : DayDatabase.getAllDayData()) {
