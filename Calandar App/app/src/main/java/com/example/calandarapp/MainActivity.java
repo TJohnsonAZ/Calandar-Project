@@ -2,7 +2,6 @@ package com.example.calandarapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -15,21 +14,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,28 +43,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Boolean previousDayInfoSet = true;
 
-    JSONObject jsonFromRequest = null;
+    static String urlForHttpReq = "http://142.11.236.52:8080/dayData";
 
-    JSONArray jsonArrayFromRequest = null;
+    JSONObject jsonObjectFromGet;
 
-    Boolean httpReqSuccess = false;
+    JSONArray jsonArrayFromGet;
 
-    String urlForHttpReq;
-
-    RequestQueue queue;
-
-    JSONArray jsonDayArray = new JSONArray();
+    httpRequest httpRequestMaker;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //tryHTTPRequestForJSONArray();
 
+        httpRequestMaker = new httpRequest( this );
+
+        tryGetRequestThreadAndLoadCal();
+
+        Log.d("FINISHED...","thread:)");
         //prevents dark mode from doing anything
-
-        queue = Volley.newRequestQueue(this);
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         super.onCreate(savedInstanceState);
@@ -88,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = getIntent();
         String calandarNameFromUser = intent.getStringExtra(MainMenu.CALNAME_MESSAGE);
+
         Log.d("Cal name", " " + calandarNameFromUser);
 
         TextView calandarNameTitle = (TextView)findViewById(R.id.calendarName);
@@ -145,9 +127,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int dayNumber;
 
-        urlForHttpReq = "http://142.11.236.52:8080/dayData";
-
-        tryHTTPRequestForJSONArray(urlForHttpReq);
 
         prevMonth = findViewById(R.id.prevMonth);
         nextMonth = findViewById(R.id.nextMonth);
@@ -181,6 +160,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void nextMonth(View view)
     {
+        tryGetRequestThreadAndLoadCal();
+
         calandar.nextMonth();
         addIdsToDayId();
         monthName = findViewById(R.id.monthYear);
@@ -208,6 +189,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void preMonth(View view)
     {
+        tryGetRequestThreadAndLoadCal();
+
         calandar.preMonth();
 
         addIdsToDayId();
@@ -237,6 +220,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             dayId.get(index).setText(R.string.blank_day);
         }
 
+    }
+
+    private void tryGetRequestThreadAndLoadCal()
+    {
+        httpRequestMaker.start();
+
+        while( httpRequestMaker.isAlive() )
+        {
+            Log.d("WAITING...","thread:)");
+        }
+
+        try {
+            loadCalWithDays();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addIdsToDayId()
@@ -297,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void setDayInformation()
+    private void setDayInformationPopUp()
     {
         View customView = getLayoutInflater().inflate(R.layout.realpopupwindow, null);
         theWindowForPopping = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -316,12 +315,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if( subStringDay.equals("day") && previousDayInfoSet)
         {
             previousDayInfoSet = false;
-            setDayInformation();
+            setDayInformationPopUp();
             dayClickedOn = aView;
         }
     }
 
     public void nonCompletedDayButton(View view) throws JSONException {
+
         String urlForPutRequest;
 
         String dayNumberAsString = dayClickedOn.getText().toString();
@@ -332,15 +332,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         previousDayInfoSet = true;
 
-        JSONObject updateDayJSONObject = new JSONObject().put("dayOfMonth", dayNumberAsString);
-        updateDayJSONObject.put("defaultColor","none");
-        updateDayJSONObject.put("incompleteColor","none");
-        updateDayJSONObject.put("completeColor","none");
-        updateDayJSONObject.put("setColor","red");
+        JSONObject updateDayJSONObject = new JSONObject().put("dayOfYear", dayNumberAsString);
+        updateDayJSONObject.put("activity1DayStatus","1");
+        updateDayJSONObject.put("activity2DayStatus","0");
+        updateDayJSONObject.put("activity3DayStatus","0");
+        updateDayJSONObject.put("activity2DayStatus","0");
 
         urlForPutRequest = String.format("http://142.11.236.52:8080/dayData?dayNum=%s", dayNumberAsString );
 
-        tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
+        httpRequestMaker.tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
     }
 
     public void completedDayButton(View view) throws JSONException {
@@ -363,10 +363,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         urlForPutRequest = String.format("http://142.11.236.52:8080/dayData?dayNum=%s", dayNumberAsString );
 
-        tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
+        httpRequestMaker.tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
     }
 
     public void clearDayButton(View view) throws JSONException {
+
         String urlForPutRequest;
 
         String dayNumberAsString = dayClickedOn.getText().toString();
@@ -385,136 +386,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         urlForPutRequest = String.format("http://142.11.236.52:8080/dayData?dayNum=%s", dayNumberAsString );
 
-        tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
+        httpRequestMaker.tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
     }
 
-    public void tryHTTPRequest(String url)
-    {
-        Log.d("Entered", "MAKING REQ");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //textView.setText("Response: " + response.toString());
-                        Log.d("success OBJ","REQUEST SUCCESS");
-                        jsonFromRequest = response;
-                        jsonDayArray.put(response);
-                        httpReqSuccess = true;
-                    }
-                }, new Response.ErrorListener() {
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        httpReqSuccess = false;
-                        //textView.setText("No worky ");
-                        Log.d("anError OBJ","REQUEST FAILURE");
-
-                        if (error instanceof AuthFailureError) {
-                            Log.d("anError OBJ", "auth");
-                        } else if (error instanceof ServerError) {
-                            Log.d("anError OBJ", "server");
-                        } else if (error instanceof NetworkError) {
-                            Log.d("anError OBJ", "network");
-                        } else if (error instanceof ParseError) {
-                            Log.d("anError OBJ", "parse");
-                        }
-                        Log.d("MESSAGE anError OBJ", "Error MESSAGE: " + error.getMessage());
-
-                    }
-                });
-
-        //textView.setText("Text changed, method called ");
-
-        queue.add(jsonObjectRequest);
-    }
-
-    public void tryHTTPPutRequest(String url, JSONObject putObject)
-    {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.PUT, url, putObject, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //textView.setText("Response: " + response.toString());
-                        Log.d("successOBJPUT","REQUEST SUCCESS");
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        httpReqSuccess = false;
-                        //textView.setText("No worky ");
-                        Log.d("anErrorOBJPUT","REQUEST FAILURE");
-
-                        if (error instanceof AuthFailureError) {
-                            Log.d("anError OBJ PUT", "auth");
-                        } else if (error instanceof ServerError) {
-                            Log.d("anError OBJ PUT", "server");
-                        } else if (error instanceof NetworkError) {
-                            Log.d("anError OBJ PUT", "network");
-                        } else if (error instanceof ParseError) {
-                            Log.d("anError OBJ PUT", "parse");
-                        }
-                        Log.d("MESSAGE anError OBJ PUT", "Error MESSAGE: " + error.getMessage());
-
-                    }
-                });
-        queue.add(jsonObjectRequest);
-    }
-
-    public void tryHTTPRequestForJSONArray(String url)
-    {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        //textView.setText("Response: " + response.toString());
-                        Log.d("success array","REQUEST SUCCESS");
-                        jsonArrayFromRequest =  response;
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //textView.setText("No worky ");
-                        Log.d("anError Array","REQUEST FAILURE");
-
-                        if (error instanceof AuthFailureError) {
-                            Log.d("anError Array", "auth");
-                        } else if (error instanceof ServerError) {
-                            Log.d("anError Array", "server");
-                        } else if (error instanceof NetworkError) {
-                            Log.d("anError Array", "network");
-                        } else if (error instanceof ParseError) {
-                            Log.d("anError Array", "parse");
-                        }
-                        Log.d("MESSAGE anError Array", "Error MESSAGE: " + error.getMessage());
-
-                    }
-                });
-        queue.add(jsonObjectRequest);
-    }
 
     public void checkIfLoadingDone(View view)
     {
-        urlForHttpReq = "http://142.11.236.52:8080/dayData";
+        //making a get request updates a global variable with an array of 365 days, is then used by loadCalWithDays.
+        httpRequestMaker.tryHTTPGetRequestForJSONArray(urlForHttpReq);
 
-        //making a put request updates a global variable with an array of 365 days, is then used by loadCalWithDays.
-        tryHTTPRequestForJSONArray(urlForHttpReq);
-
-        Toast toast = Toast.makeText(this, "ArrayLength: " + jsonArrayFromRequest.length(), Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, "ArrayLength: " + jsonArrayFromGet.length(), Toast.LENGTH_SHORT);
 
         toast.show();
     }
 
     //only works for January
-    public void loadCalWithDays(View view) throws JSONException
+    public void loadCalWithDays() throws JSONException
     {
+        jsonArrayFromGet = httpRequestMaker.jsonArrayFromRequest;
         //when starting day is used as an index in dayId array it is correct
 
         //firstDayOfAMonth is the index where we will start iterating through the dayId list, 31 times
@@ -533,13 +424,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //aDayInDayIdList < numberOfDaysInMonth + firstDayOfAMonth -- iterate from first day of month in dayId list to last day of month in id list
         for(aDayInDayIdList = firstDayOfAMonth ; aDayInDayIdList < numberOfDaysInMonth + firstDayOfAMonth; aDayInDayIdList++)
         {
-            JSONObject aDayObj = jsonArrayFromRequest.getJSONObject(JSONArrayIndex);
+            JSONObject aDayObj = jsonArrayFromGet.getJSONObject(JSONArrayIndex);
 
-            if(aDayObj.get("setColor").equals("green"))
+            //this stuff dont work no more after adam changed some stuff
+            if(aDayObj.get("activity1DayStatus").equals("3"))
             {
                 dayId.get(aDayInDayIdList).setBackgroundColor(getResources().getColor(R.color.LimeGreen));
             }
-            else if(aDayObj.get("setColor").equals("red"))
+            else if(aDayObj.get("activity1DayStatus").equals("2"))
             {
                 dayId.get(aDayInDayIdList).setBackgroundColor(getResources().getColor(R.color.Crimson));
             }

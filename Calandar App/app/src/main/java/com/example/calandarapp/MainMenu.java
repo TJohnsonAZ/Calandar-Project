@@ -3,19 +3,13 @@ package com.example.calandarapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.view.ViewGroup.LayoutParams;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class MainMenu extends AppCompatActivity {
 
@@ -118,10 +112,5 @@ public class MainMenu extends AppCompatActivity {
         }
         calandarNameSet = true;
         Log.d("Confirmed", "Name confirmed!!!!");
-    }
-
-    public void toastAFuckYou(View view) {
-        Toast toast = Toast.makeText(this, "Hello Toast", Toast.LENGTH_SHORT);
-        toast.show();
     }
 }
