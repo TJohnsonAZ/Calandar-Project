@@ -3,56 +3,61 @@ package com.CalandarProject.v1;
 public class DayData {
 
 	private String dayOfYear;
-	private String defaultColor;
-	private String incompleteColor;
-	private String completeColor;
-	private String setColor;
+	private String activity1DayStatus;
+	private String activity2DayStatus;
+	private String activity3DayStatus;
+	private String activity4DayStatus;
 		
 	public DayData() {
-		defaultColor = "white";
-		incompleteColor = "red";
-		completeColor = "green";
-		setColor = defaultColor;
+		this.activity1DayStatus = "0";
+		this.activity2DayStatus = "0";
+		this.activity3DayStatus = "0";
+		this.activity4DayStatus = "0";
 	}
 	
-	public DayData(String dayOfMonth, String defaultColor, String incompleteColor, String completeColor, String setColor) {
+	public DayData(String dayOfMonth, String activity1DayStatus, String activity2DayStatus, String activity3DayStatus, String activity4DayStatus) {
 		this.dayOfYear = dayOfMonth;
-		this.defaultColor = defaultColor;
-		this.incompleteColor = incompleteColor;
-		this.completeColor = completeColor;
-		this.setColor = setColor;
+		this.activity1DayStatus = activity1DayStatus;
+		this.activity2DayStatus = activity2DayStatus;
+		this.activity3DayStatus = activity3DayStatus;
+		this.activity4DayStatus = activity4DayStatus;
 	}
 	
 	public DayData(String dayNum) {
 		this();
 		dayOfYear = dayNum;
 	}
-	
-	public String getDefaultColor() {
-		return defaultColor;
-	}
-	public void setDefaultColor(String defaultColor) {
-		this.defaultColor = defaultColor;
-	}
-	public String getIncompleteColor() {
-		return incompleteColor;
-	}
-	public void setIncompleteColor(String incompleteColor) {
-		this.incompleteColor = incompleteColor;
-	}
-	public String getCompleteColor() {
-		return completeColor;
-	}
-	public void setCompleteColor(String completeColor) {
-		this.completeColor = completeColor;
+
+	public String getActivity1DayStatus() {
+		return activity1DayStatus;
 	}
 
-	public String getSetColor() {
-		return setColor;
+	public void setActivity1DayStatus(String activity1DayStatus) {
+		this.activity1DayStatus = activity1DayStatus;
 	}
 
-	public void setSetColor(String setColor) {
-		this.setColor = setColor;
+	public String getActivity2DayStatus() {
+		return activity2DayStatus;
+	}
+
+	public void setActivity2DayStatus(String activity2DayStatus) {
+		this.activity2DayStatus = activity2DayStatus;
+	}
+
+	public String getActivity3DayStatus() {
+		return activity3DayStatus;
+	}
+
+	public void setActivity3DayStatus(String activity3DayStatus) {
+		this.activity3DayStatus = activity3DayStatus;
+	}
+
+	public String getActivity4DayStatus() {
+		return activity4DayStatus;
+	}
+
+	public void setActivity4DayStatus(String activity4DayStatus) {
+		this.activity4DayStatus = activity4DayStatus;
 	}
 
 	public String getDayOfYear() {
@@ -61,12 +66,12 @@ public class DayData {
 	
 	@Override
 	public String toString() {
-		return "DayData [dayOfYear=" + dayOfYear + ", defaultColor=" + defaultColor + ", incompleteColor="
-				+ incompleteColor + ", completeColor=" + completeColor + ", setColor=" + setColor + "]";
+		return "DayData [dayOfYear=" + dayOfYear + ", activity1DayStatus=" + activity1DayStatus + ", activity2DayStatus=" + activity2DayStatus + 
+				", activity3DayStatus=" + activity3DayStatus + ", activity4DayStatus=" + activity4DayStatus + "]";
 	}
 
 	public String[] toStringArray() {
-		return new String[] {String.valueOf(dayOfYear), defaultColor, incompleteColor, completeColor, setColor}; 
+		return new String[] {String.valueOf(dayOfYear), activity1DayStatus, activity2DayStatus, activity3DayStatus, activity4DayStatus}; 
 	}
 	
 }
