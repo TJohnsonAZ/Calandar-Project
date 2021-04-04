@@ -3,70 +3,183 @@ package com.CalandarProject.v1;
 public class Summary {
 
     DayData[] summaryPeriod;
-    int completeCounter, incompleteCounter, clearCounter, highestStreak;
+    int[] completeCounter, incompleteCounter, clearCounter, highestStreak;
+    int currentStreak1, currentStreak2, currentStreak3, currentStreak4, numActivities, highestOverallStreak;
 
     public Summary(int startDate, int endDate) {
        summaryPeriod = new DayData[endDate - startDate + 1];
+       completeCounter = new int[4];
+       incompleteCounter = new int[4];
+       clearCounter = new int[4];
+       highestStreak = new int[4];
        int index;
+       numActivities = 0;
        int dayIterator = startDate;
-       completeCounter = 0;
-       incompleteCounter = 0;
-       clearCounter = 0;
-       highestStreak = 0;
-       int currentStreak = 0;
+       highestOverallStreak = 0;
+       currentStreak1 = 0;
+       currentStreak2 = 0;
+       currentStreak3 = 0;
+       currentStreak4 = 0;
+       Boolean loopEnd = false;
 
        // populate array with information about days in the given period and get summary information
        for (index = 0; index < summaryPeriod.length; index++) {
            summaryPeriod[index] = DayDatabase.getDayData(String.valueOf(dayIterator));
 
-          // check for day complete
-          if (summaryPeriod[index].getActivity1DayStatus() == "3") {
-              completeCounter++;
-              currentStreak++;
-          }
+           analyzeDay(summaryPeriod[index]);
 
-          // otherwise, assume day not complete
-          else {
-              // check for current streak greater than current highest
-              if (currentStreak > highestStreak) {
-                  highestStreak = currentStreak;
-              }
+           dayIterator++;
+       }
 
-              // reset streak
-              currentStreak = 0;
+       // get number of activities and overall highest streak
+       index = 0;
+       while (!loopEnd) {
+           if (highestStreak[index] != -1) {
+               numActivities++;
 
-              // check for day not complete
-              if (summaryPeriod[index].getActivity1DayStatus() == "2") {
-                  incompleteCounter++;
-              }
+               if (highestStreak[index] > highestOverallStreak) {
+                   highestOverallStreak = highestStreak[index];
+               }
+           }
 
-              // otherwise, assume day not marked
-              else {
-                  clearCounter++;
-              }
-          }
-
-          dayIterator++;
+           else {
+               loopEnd = true;
+           }
        }
     }
 
-    public DayData[] getsummaryPeriod() {
-        return summaryPeriod;
+    private void analyzeDay(DayData day) {
+
+         // check for first activity complete
+         if (day.getActivity1DayStatus() == "3") {
+             completeCounter[0]++;
+             currentStreak1++;
+             if (currentStreak1 > highestStreak[0]) {
+                 highestStreak[0] = currentStreak1;
+             }
+         }
+
+         // otherwise, check for incomplete
+         else if (day.getActivity1DayStatus() == "2") {
+             incompleteCounter[0]++;
+             currentStreak1 = 0;
+         }
+
+         // otherwise, check for not marked
+         else if (day.getActivity1DayStatus() == "1") {
+             clearCounter[0]++;
+             currentStreak1 = 0;
+         }
+
+         // otherwise, assume activity does not exist
+         else {
+             completeCounter[0] = -1;
+             incompleteCounter[0] = -1;
+             clearCounter[0] = -1;
+             highestStreak[0] = -1;
+         }
+
+         /*
+          * repeat process for remaining activities
+          */
+
+         // activity 2
+         if (day.getActivity2DayStatus() == "3") {
+             completeCounter[1]++;
+             if (currentStreak2 > highestStreak[1]) {
+                 highestStreak[1] = currentStreak2;
+             }
+         }
+
+         else if (day.getActivity2DayStatus() == "2") {
+             incompleteCounter[1]++;
+             currentStreak2 = 0;
+         }
+
+         else if (day.getActivity2DayStatus() == "1") {
+             clearCounter[1]++;
+             currentStreak2 = 0;
+         }
+
+         else {
+             completeCounter[1] = -1;
+             incompleteCounter[1] = -1;
+             clearCounter[1] = -1;
+             highestStreak[1] = -1;
+         }
+
+         // activity 3
+         if (day.getActivity3DayStatus() == "3") {
+             completeCounter[2]++;
+             if (currentStreak3 > highestStreak[2]) {
+                 highestStreak[2] = currentStreak3;
+             }
+         }
+
+         else if (day.getActivity3DayStatus() == "2") {
+             incompleteCounter[2]++;
+             currentStreak3 = 0;
+         }
+
+         else if (day.getActivity3DayStatus() == "1") {
+             clearCounter[2]++;
+             currentStreak3 = 0;
+         }
+
+         else {
+             completeCounter[2] = -1;
+             incompleteCounter[2] = -1;
+             clearCounter[2] = -1;
+             highestStreak[2] = -1;
+         }
+
+         // activity 4
+         if (day.getActivity4DayStatus() == "3") {
+             completeCounter[3]++;
+             if (currentStreak4 > highestStreak[3]) {
+                 highestStreak[3] = currentStreak4;
+             }
+         }
+
+         else if (day.getActivity4DayStatus() == "2") {
+             incompleteCounter[3]++;
+             currentStreak4 = 0;
+         }
+
+         else if (day.getActivity4DayStatus() == "1") {
+             clearCounter[3]++;
+             currentStreak4 = 0;
+         }
+
+         else {
+             completeCounter[3] = -1;
+             incompleteCounter[3] = -1;
+             clearCounter[3] = -1;
+             highestStreak[3] = -1;
+         }
     }
 
-    public int getCompleteCounter() {
+    public int[] getCompleteCounter() {
         return completeCounter;
     }
 
-    public int getIncompelteCounter() {
+    public int[] getIncompelteCounter() {
         return incompleteCounter;
     }
 
-    public int getClearCounter() {
+    public int[] getClearCounter() {
         return clearCounter;
     }
 
-    public int getHighestStreak() {
+    public int[] getHighestStreak() {
         return highestStreak;
+    }
+
+    public int getNumActivities() {
+        return numActivities;
+    }
+
+    public int getHighestOverallStreak() {
+        return highestOverallStreak;
     }
 }
