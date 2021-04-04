@@ -45,6 +45,8 @@ public class Summary {
            else {
                loopEnd = true;
            }
+           
+           index++;
        }
     }
 
