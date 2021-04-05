@@ -1,5 +1,6 @@
 package com.CalandarProject.v1;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,5 +31,12 @@ public class UserController {
 	public User updateUser( @RequestParam(value = "userID", required = true ) String userID,
 									@RequestBody User user) {
 		return UserDatabase.updateUser(userID, user);
+	}
+	
+	//delete
+	// delete
+	@DeleteMapping("/user")
+	public User removeActivity( @RequestParam(value = "userID", required = true) String userID) {
+		return UserDatabase.deleteUser(userID);
 	}
 }
