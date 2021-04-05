@@ -8,13 +8,6 @@ public class Calendar {
 		public MonthNode nextMonth;
 		public MonthNode previousMonth;
 		
-		//useless worthless class constructor
-		public MonthNode() {
-			monthData = null;
-			nextMonth = null;
-			previousMonth = null;
-		}
-		
 		public MonthNode( String monthName, int year ) {
 			monthData = new Month( monthName, year );
 			nextMonth = null;
@@ -42,6 +35,16 @@ public class Calendar {
 				
 		}
 		
+		public void findAbsDayNum() {
+			int previousAbsNum;
+			int previousNumDays;
+			if ( previousMonth != null ) {
+				previousAbsNum = previousMonth.monthData.getAbsDayNum();
+				previousNumDays = previousMonth.monthData.getNumDays();
+				monthData.setAbsDayNum( previousAbsNum + previousNumDays );
+			}
+		}
+		
 	}
 	
 	private final String[] MONTH_LIST = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
@@ -61,9 +64,10 @@ public class Calendar {
 		MonthNode newMonth;
 		int monthNum;
 		if( headNode == null ) {
-			newMonth = new MonthNode( MONTH_LIST[0], 2020 );
+			newMonth = new MonthNode( MONTH_LIST[0], 2021 );
 			headNode = newMonth;
-			newMonth.monthData.setFirstDayOfMonth( 2 );
+			newMonth.monthData.setFirstDayOfMonth( 3 );
+			newMonth.monthData.setAbsDayNum( 0 );
 		}
 		else {
 			if( tailNode.monthData.getMonthName().equals(MONTH_LIST[11]) ) {
@@ -77,6 +81,7 @@ public class Calendar {
 			}
 			newMonth.previousMonth = tailNode;
 			newMonth.findFirstDay();
+			newMonth.findAbsDayNum();
 		}
 		tailNode = newMonth;
 	}
