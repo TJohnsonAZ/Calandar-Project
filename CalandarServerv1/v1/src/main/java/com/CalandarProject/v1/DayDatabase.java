@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DayDatabase {
-
+	//list of list arrays
 	private static List<DayData> data = new ArrayList<DayData>();
 
 	public static DayData addDayData(DayData dayData) {
