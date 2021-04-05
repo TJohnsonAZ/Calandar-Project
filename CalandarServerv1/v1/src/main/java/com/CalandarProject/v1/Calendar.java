@@ -67,7 +67,7 @@ public class Calendar {
 			newMonth = new MonthNode( MONTH_LIST[0], 2021 );
 			headNode = newMonth;
 			newMonth.monthData.setFirstDayOfMonth( 3 );
-			newMonth.monthData.setAbsDayNum( 0 );
+			newMonth.monthData.setAbsDayNum( 1 );
 		}
 		else {
 			if( tailNode.monthData.getMonthName().equals(MONTH_LIST[11]) ) {
