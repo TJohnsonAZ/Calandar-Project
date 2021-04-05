@@ -8,6 +8,7 @@ public class Month{
 		private String firstDayOfMonth;
 		private int numDays;
 		private int year;
+		private int absDayNum;
 		
 		private int monthNum;
 		private int firstDayNum;
@@ -93,12 +94,20 @@ public class Month{
 			firstDayOfMonth = DAYS[ firstDayNum ];
 		}
 		
+		public void setAbsDayNum( int absDayNum ) {
+			this.absDayNum = absDayNum;
+		}
+		
 		public String getFirstDayOfMonth() {
 			return firstDayOfMonth;
 		}
 		
 		public int getFirstDayNum() {
 			return firstDayNum;
+		}
+		
+		public int getAbsDayNum() {
+			return absDayNum;
 		}
 		
 		public int getMonthNum() {
