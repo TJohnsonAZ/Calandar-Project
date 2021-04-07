@@ -176,7 +176,7 @@ public class httpRequest extends Thread
             ourMainAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ourMainAct.getJSONArrayResponse();
+                    ourMainAct.getJSONArrayResponse(jsonArrayFromRequest);
                 }
             });
 

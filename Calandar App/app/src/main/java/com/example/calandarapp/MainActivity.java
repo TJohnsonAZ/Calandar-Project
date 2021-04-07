@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -227,18 +228,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void tryGetRequestThreadAndLoadCal()
     {
-        httpRequestMaker.start();
+        httpRequest httpReqThread = new httpRequest(this);
 
-        try {
-            loadCalWithDays();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        httpReqThread.start();
+
     }
 
-    public void getJSONArrayResponse()
+    public void getJSONArrayResponse( JSONArray jsonArray)
     {
         try {
+            jsonArrayFromGet = jsonArray;
             loadCalWithDays();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -329,9 +328,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void nonCompletedDayButton(View view) throws JSONException {
 
-        String urlForPutRequest;
-
         String dayNumberAsString = dayClickedOn.getText().toString();
+
+        int dayNumberAsInt = Integer.parseInt(dayNumberAsString);
+
+        int monthNameAsNumber = calandar.monthNameToNum.get( calandar.getCurrentMonthName() );
+
+        Calendar randCalendar = Calendar.getInstance();
+
+        randCalendar.set(2021, monthNameAsNumber, dayNumberAsInt);
+
+        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR) + 1;
+
+        dayNumberAsString = "" + dayOfYear;
+
+        String urlForPutRequest;
 
         dayClickedOn.setBackgroundColor( getResources().getColor(R.color.Crimson) );
 
@@ -352,9 +363,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void completedDayButton(View view) throws JSONException {
 
+        String dayNumberAsString = dayClickedOn.getText().toString();
+
+        int dayNumberAsInt = Integer.parseInt(dayNumberAsString);
+
+        int monthNameAsNumber = calandar.monthNameToNum.get( calandar.getCurrentMonthName() );
+
+        Calendar randCalendar = Calendar.getInstance();
+
+        randCalendar.set(2021, monthNameAsNumber, dayNumberAsInt);
+
+        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR) + 1;
+
+        dayNumberAsString = "" + dayOfYear;
+
         String urlForPutRequest;
 
-        String dayNumberAsString = dayClickedOn.getText().toString();
+
 
         dayClickedOn.setBackgroundColor( getResources().getColor(R.color.LimeGreen) );
 
@@ -375,9 +400,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void clearDayButton(View view) throws JSONException {
 
+        String dayNumberAsString = dayClickedOn.getText().toString();
+
+        int dayNumberAsInt = Integer.parseInt(dayNumberAsString);
+
+        int monthNameAsNumber = calandar.monthNameToNum.get( calandar.getCurrentMonthName() );
+
+        Calendar randCalendar = Calendar.getInstance();
+
+        randCalendar.set(2021, monthNameAsNumber, dayNumberAsInt);
+
+        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR) + 1;
+
+        dayNumberAsString = "" + dayOfYear;
+
         String urlForPutRequest;
 
-        String dayNumberAsString = dayClickedOn.getText().toString();
+
 
         dayClickedOn.setBackgroundColor( getResources().getColor(R.color.White) );
 
@@ -399,33 +438,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    public void checkIfLoadingDone(View view)
+    public void clearCal(View view)
     {
-        //making a get request updates a global variable with an array of 365 days, is then used by loadCalWithDays.
-        httpRequestMaker.tryHTTPGetRequestForJSONArray(urlForHttpReq);
-
-        Toast toast = Toast.makeText(this, "ArrayLength: " + jsonArrayFromGet.length(), Toast.LENGTH_SHORT);
-
-        toast.show();
+        clearCalandar();
     }
 
     //only works for January
     public void loadCalWithDays() throws JSONException
     {
-        jsonArrayFromGet = httpRequestMaker.jsonArrayFromRequest;
+        //clear the calendar or else days beyond the current months capacity dont change color
+        clearCalandar();
+        int monthNameAsNumber = calandar.monthNameToNum.get( calandar.getCurrentMonthName() );
+        //jsonArrayFromGet = httpRequestMaker.jsonArrayFromRequest;
         //when starting day is used as an index in dayId array it is correct
 
         //firstDayOfAMonth is the index where we will start iterating through the dayId list, 31 times
-        int firstDayOfAMonth = calandar.getStartingDay(calandar.getCurrentYear(), calandar.getStartingMonth());
+        int firstDayOfAMonth = calandar.getStartingDay(calandar.getCurrentYear(), calandar.getCurrentMonthName());
+
+        Calendar randCalendar = Calendar.getInstance();
+
+        Log.d("DAYOFYEAR", "Month: " + monthNameAsNumber);
+        Log.d("DAYOFYEAR", "firstDayOfMonth: " + firstDayOfAMonth);
+
+        randCalendar.set(2021, monthNameAsNumber, 1);
+        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR);
+
+
+        Log.d("DAYOFYEAR", "dayofYear: " + dayOfYear);
 
         //0 represents january, only temporary
-        int numberOfDaysInMonth = calandar.getMonths().get(0).getNumOfDays();
+        int numberOfDaysInMonth = calandar.getMonths().get(monthNameAsNumber).getNumOfDays();
 
         //index var to be used to access days in the dayId list
         int aDayInDayIdList;
 
         //index 0 represents day 1 in the year, we start here for january, will change in the future
-        int JSONArrayIndex = 0;
+        int JSONArrayIndex = dayOfYear;
 
         //start at first day of month, aligns with first day index in dayId list.
         //aDayInDayIdList < numberOfDaysInMonth + firstDayOfAMonth -- iterate from first day of month in dayId list to last day of month in id list
@@ -452,47 +500,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void loadCalWithDays(View view) throws JSONException
+    public void clearCalandar()
     {
-        jsonArrayFromGet = httpRequestMaker.jsonArrayFromRequest;
-        //when starting day is used as an index in dayId array it is correct
+        int aDayIndex;
 
-        Log.d("THREADTESTLoadCal","successVal: " + httpRequestMaker.requestSuccess);
-
-        //firstDayOfAMonth is the index where we will start iterating through the dayId list, 31 times
-        int firstDayOfAMonth = calandar.getStartingDay(calandar.getCurrentYear(), calandar.getStartingMonth());
-
-        //0 represents january, only temporary
-        int numberOfDaysInMonth = calandar.getMonths().get(0).getNumOfDays();
-
-        //index var to be used to access days in the dayId list
-        int aDayInDayIdList;
-
-        //index 0 represents day 1 in the year, we start here for january, will change in the future
-        int JSONArrayIndex = 0;
-
-        //start at first day of month, aligns with first day index in dayId list.
-        //aDayInDayIdList < numberOfDaysInMonth + firstDayOfAMonth -- iterate from first day of month in dayId list to last day of month in id list
-        for(aDayInDayIdList = firstDayOfAMonth ; aDayInDayIdList < numberOfDaysInMonth + firstDayOfAMonth; aDayInDayIdList++)
+        for( aDayIndex = 0; aDayIndex <  dayId.size() ; aDayIndex++ )
         {
-            JSONObject aDayObj = jsonArrayFromGet.getJSONObject(JSONArrayIndex);
-
-            //this stuff dont work no more after adam changed some stuff
-            if(aDayObj.get("activity1DayStatus").equals("3"))
-            {
-                dayId.get(aDayInDayIdList).setBackgroundColor(getResources().getColor(R.color.LimeGreen));
-            }
-            else if(aDayObj.get("activity1DayStatus").equals("2"))
-            {
-                dayId.get(aDayInDayIdList).setBackgroundColor(getResources().getColor(R.color.Crimson));
-            }
-            else
-            {
-                Log.d("Else","else statement hit");
-                dayId.get(aDayInDayIdList).setBackgroundColor(getResources().getColor(R.color.White));
-            }
-
-            JSONArrayIndex++;
+            dayId.get(aDayIndex).setBackgroundColor(getResources().getColor(R.color.White));
         }
     }
+
+
 }

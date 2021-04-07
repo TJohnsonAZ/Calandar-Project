@@ -597,14 +597,8 @@
         android:id="@+id/loadingbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Update/Check Loading" />
-
-    <Button
-        android:id="@+id/finishedbutton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Load Days"
-        android:onClick = "loadCalWithDays"/>
+        android:text="Clear Calendar"
+        android:onClick="clearCal"/>
 
 
 </LinearLayout>
