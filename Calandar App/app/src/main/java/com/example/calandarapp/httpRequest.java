@@ -13,10 +13,13 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 public class httpRequest extends Thread
 {
@@ -25,23 +28,33 @@ public class httpRequest extends Thread
 
     JSONArray jsonArrayFromRequest = new JSONArray();
 
-    Boolean requestSuccess = true;
+    protected Boolean requestSuccess = false;
 
     RequestQueue queue;
 
     String urlGetYear = "http://142.11.236.52:8080/dayData";
 
+    MainActivity ourMainAct;
+
     public httpRequest(Context mainActivityContext)
     {
         queue = Volley.newRequestQueue( mainActivityContext );
-    }
 
+        ourMainAct = (MainActivity) mainActivityContext;
+    }
 
     public void run()
     {
+        requestSuccess = false;
+        trySynchHTTPGetRequestForJSONArray( urlGetYear );
+    }
+    /*
+    public void run()
+    {
+        requestSuccess = false;
         tryHTTPGetRequestForJSONArray(urlGetYear);
     }
-
+    */
 
     public void tryHTTPGetRequest(String url)
     {
@@ -54,7 +67,6 @@ public class httpRequest extends Thread
                         //textView.setText("Response: " + response.toString());
                         Log.d("success OBJ","REQUEST SUCCESS");
                         jsonObjFromRequest = response;
-                        requestSuccess = true;
                     }
                 }, new Response.ErrorListener() {
 
@@ -122,8 +134,9 @@ public class httpRequest extends Thread
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("success array","REQUEST SUCCESS");
+                        Log.d("THREADTESTgetarray","REQUEST SUCCESS");
                         jsonArrayFromRequest =  response;
+                        requestSuccess = true;
                     }
                 }, new Response.ErrorListener() {
 
@@ -147,4 +160,34 @@ public class httpRequest extends Thread
         queue.add(jsonObjectRequest);
     }
 
+    public void trySynchHTTPGetRequestForJSONArray(String url)
+    {
+        RequestFuture<JSONArray> future = RequestFuture.newFuture();
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url,null, future, future);
+        queue.add(request);
+
+        Log.d("THREADTEST","request added");
+
+        try {
+            Log.d("THREADTEST", "waiting for future.get");
+            jsonArrayFromRequest = future.get(); // this will block
+
+
+            ourMainAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ourMainAct.getJSONArrayResponse();
+                }
+            });
+
+            Log.d("THREADTEST", "future.get finished");
+        } catch (InterruptedException e) {
+            Log.d("THREADTEST", "future interruption");
+            // exception handling
+        } catch (
+                ExecutionException e) {
+            // exception handling
+            Log.d("THREADTEST", "execution exception");
+        }
+    }
 }
