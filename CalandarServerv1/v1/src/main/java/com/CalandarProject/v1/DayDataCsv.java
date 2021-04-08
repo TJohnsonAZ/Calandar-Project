@@ -53,7 +53,6 @@ public class DayDataCsv {
 	public void readAllDataAtOnce() {
 		
 		try {
-				
 			FileReader filereader = new FileReader(file); 
 
 			CSVReader csvReader = new CSVReaderBuilder(filereader) 

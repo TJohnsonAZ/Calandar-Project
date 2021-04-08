@@ -15,12 +15,11 @@ public class UserController {
 	@PostMapping("/user")
 	public User createUser(@RequestParam(value = "username") String username) {
 		User user = new User(username);
-		UserDatabase.addUser(user);
 		int daysInYear = 365;
 		for(int i = 1; i <= daysInYear; i++) {
 			DayDatabase.addDayData(new DayData(user.getUserID(), String.valueOf(i)));
 		}
-		return user;
+		return 	UserDatabase.addUser(user);
 	}
 	
 	// retrieve
@@ -39,7 +38,6 @@ public class UserController {
 		return UserDatabase.updateUser(userID, user);
 	}
 	
-	//delete
 	// delete
 	@DeleteMapping("/user")
 	public User removeActivity( @RequestParam(value = "userID", required = true) String userID) {
