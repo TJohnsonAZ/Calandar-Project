@@ -2,6 +2,7 @@ package com.CalandarProject.v1;
 
 public class DayData {
 
+	private String user;
 	private String dayOfYear;
 	private String activity1DayStatus;
 	private String activity2DayStatus;
@@ -9,13 +10,15 @@ public class DayData {
 	private String activity4DayStatus;
 		
 	public DayData() {
-		this.activity1DayStatus = "0";
-		this.activity2DayStatus = "0";
-		this.activity3DayStatus = "0";
-		this.activity4DayStatus = "0";
+		this.user = "";
+		this.activity1DayStatus = "1";
+		this.activity2DayStatus = "1";
+		this.activity3DayStatus = "1";
+		this.activity4DayStatus = "1";
 	}
 	
-	public DayData(String dayOfMonth, String activity1DayStatus, String activity2DayStatus, String activity3DayStatus, String activity4DayStatus) {
+	public DayData(String user, String dayOfMonth, String activity1DayStatus, String activity2DayStatus, String activity3DayStatus, String activity4DayStatus) {
+		this.user = user;
 		this.dayOfYear = dayOfMonth;
 		this.activity1DayStatus = activity1DayStatus;
 		this.activity2DayStatus = activity2DayStatus;
@@ -23,9 +26,18 @@ public class DayData {
 		this.activity4DayStatus = activity4DayStatus;
 	}
 	
-	public DayData(String dayNum) {
+	public DayData(String user, String dayNum) {
 		this();
-		dayOfYear = dayNum;
+		this.dayOfYear = dayNum;
+		this.user = user;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 	public String getActivity1DayStatus() {
@@ -64,14 +76,17 @@ public class DayData {
 		return dayOfYear;
 	}
 	
+	
+
 	@Override
 	public String toString() {
-		return "DayData [dayOfYear=" + dayOfYear + ", activity1DayStatus=" + activity1DayStatus + ", activity2DayStatus=" + activity2DayStatus + 
-				", activity3DayStatus=" + activity3DayStatus + ", activity4DayStatus=" + activity4DayStatus + "]";
+		return "DayData [user=" + user + ", dayOfYear=" + dayOfYear + ", activity1DayStatus=" + activity1DayStatus
+				+ ", activity2DayStatus=" + activity2DayStatus + ", activity3DayStatus=" + activity3DayStatus
+				+ ", activity4DayStatus=" + activity4DayStatus + "]";
 	}
 
 	public String[] toStringArray() {
-		return new String[] {String.valueOf(dayOfYear), activity1DayStatus, activity2DayStatus, activity3DayStatus, activity4DayStatus}; 
+		return new String[] {user ,dayOfYear, activity1DayStatus, activity2DayStatus, activity3DayStatus, activity4DayStatus}; 
 	}
 	
 }
