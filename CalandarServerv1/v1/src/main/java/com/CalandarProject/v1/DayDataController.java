@@ -1,5 +1,7 @@
 package com.CalandarProject.v1;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,6 +26,11 @@ public class DayDataController {
 		 	return DayDatabase.getDayData(dayNum);	
 		}
 		return DayDatabase.getAllDayData();
+	}
+	
+	@GetMapping("/userDayData")
+	public List<DayData> retrieveUserDayData(@RequestParam(value = "userID", required = true) String userId) {
+		return DayDatabase.getDayDataByUser(userId);
 	}
 	
 	// update

@@ -17,34 +17,41 @@ import com.opencsv.CSVWriter;
 @Component
 public class DayDataCsv {
 
-	private static final String file = "DayData.csv";
+	private static final String file = "dayData.csv";
 		
 	@PreDestroy
-	public void writeToCSV() {
-			
-		try {
+	public void writeToCSV() throws IOException {
+		// get all users
+			// iterate over users
+				//try catch inside loop
+		
+		
+		FileWriter outputFile = new FileWriter(file);
+		
+		for(User user : UserDatabase.getAllUsers()) {
+			try {
 				
-			FileWriter outputFile = new FileWriter(file);
-			
-			CSVWriter writer = new CSVWriter(outputFile);
-			
-			String[] header = {"Day of Year", "Activity1 Status", "Activity2 Status", "Activity3 Status", "Activity4 Status"};
-			writer.writeNext(header);
+				CSVWriter writer = new CSVWriter(outputFile);
 				
-			for(DayData dayData : DayDatabase.getAllDayData()) {
-				writer.writeNext(dayData.toStringArray());
+				String[] header = {"UserID", "Day of Year", "Activity1 Status", "Activity2 Status", "Activity3 Status", "Activity4 Status"};
+				writer.writeNext(header);
+					
+				for(DayData dayData : DayDatabase.getDayDataByUser(user.getUserID())) {
+					writer.writeNext(dayData.toStringArray());
+				}
+					
+				writer.close();
+					
 			}
-				
-			writer.close();
-				
-		}
-		catch(IOException e) {
-			e.printStackTrace();
+			catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 		
 	@PostConstruct
-	public void readAllDataAtOnce() { 
+	public void readAllDataAtOnce() {
+		
 		try {
 				
 			FileReader filereader = new FileReader(file); 
@@ -55,7 +62,11 @@ public class DayDataCsv {
 			List<String[]> allData = csvReader.readAll(); 
 			
 			for(String[] row : allData) {
-				DayData newDayData = new DayData(row[0], row[1], row[2], row[3], row[4]);
+				DayData newDayData = new DayData(row[0], row[1], row[2], row[3], row[4], row[5]);
+				if(UserDatabase.getUser(newDayData.getUser()) == null) {
+					User u = new User("", newDayData.getUser());
+					UserDatabase.addUser(u);
+				}
 				System.out.println(newDayData);
 				DayDatabase.addDayData(newDayData);
 			}

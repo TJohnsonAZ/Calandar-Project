@@ -32,6 +32,16 @@ public class DayDatabase {
 		return null;
 	}
 	
+	public static List<DayData> getDayDataByUser(String user) {
+		List<DayData> temp = new ArrayList<DayData>();
+		for(int i = 0; i < data.size(); i++) {
+			if(data.get(i).getUser().equals(user)) {
+				temp.add(data.get(i));
+			}
+		}
+		return temp;
+	}
+	
 	public static List<DayData> getAllDayData() {
 		return data;
 	}

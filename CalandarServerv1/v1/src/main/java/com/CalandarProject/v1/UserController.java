@@ -8,13 +8,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class UserController {
 	
 	// Create
 	@PostMapping("/user")
-	public User createUser(@RequestBody User newUser) {
-		UserDatabase.addUser(newUser);
-		return newUser;
+	public User createUser(@RequestParam(value = "username") String username) {
+		User user = new User(username);
+		UserDatabase.addUser(user);
+		int daysInYear = 365;
+		for(int i = 1; i <= daysInYear; i++) {
+			DayDatabase.addDayData(new DayData(user.getUserID(), String.valueOf(i)));
+		}
+		return user;
 	}
 	
 	// retrieve

@@ -19,7 +19,7 @@ public class UserDatabase {
 			return user;
 		}
 		
-	public static User updateUser( String id, User user ) {
+		public static User updateUser( String id, User user ) {
 			User userToUpdate = getUser( id );
 			if( userToUpdate != null ) {
 				userToUpdate.setUsername(user.getUsername());
