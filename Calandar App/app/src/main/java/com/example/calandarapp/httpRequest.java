@@ -13,6 +13,7 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
@@ -28,25 +29,43 @@ public class httpRequest extends Thread
 
     JSONArray jsonArrayFromRequest = new JSONArray();
 
+    JSONObject jsonObjectPostResult = null;
+
     protected Boolean requestSuccess = false;
 
     RequestQueue queue;
 
-    String urlGetYear = "http://142.11.236.52:8080/dayData";
+    String urlGetYear = "http://142.11.236.52:8080/userDayData?userID=04dd4132-6341-4394-a9bb-1dbfe4d24906";
+
+    String UUIDForUser1 = "04dd4132-6341-4394-a9bb-1dbfe4d24906";
+
+    String urlPostReq = "http://142.11.236.52:8080/user?username=butts";
+
+    int funcToRunInThread;
 
     MainActivity ourMainAct;
 
-    public httpRequest(Context mainActivityContext)
+    public httpRequest(Context mainActivityContext, int function)
     {
         queue = Volley.newRequestQueue( mainActivityContext );
 
         ourMainAct = (MainActivity) mainActivityContext;
+
+        funcToRunInThread = function;
     }
 
     public void run()
     {
-        requestSuccess = false;
-        trySynchHTTPGetRequestForJSONArray( urlGetYear );
+        if(funcToRunInThread == 1)
+        {
+            requestSuccess = false;
+            trySynchHTTPGetRequestForJSONArray( urlGetYear );
+        }
+        else if(funcToRunInThread == 2)
+        {
+            trySynchHTTPPostRequestForJSONArray(urlPostReq);
+        }
+
     }
     /*
     public void run()
@@ -103,6 +122,13 @@ public class httpRequest extends Thread
                     public void onResponse(JSONObject response) {
                         Log.d("successOBJPUT","REQUEST SUCCESS");
 
+                        ourMainAct.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ourMainAct.tryGetRequestThreadAndLoadCal();
+                            }
+                        });
+
                     }
                 }, new Response.ErrorListener() {
 
@@ -125,7 +151,6 @@ public class httpRequest extends Thread
                 });
         queue.add(jsonObjectRequest);
     }
-
 
     public void tryHTTPGetRequestForJSONArray(String url)
     {
@@ -160,6 +185,41 @@ public class httpRequest extends Thread
         queue.add(jsonObjectRequest);
     }
 
+    public void trySynchHTTPPutRequest(String url, JSONObject putObject)
+    {
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, putObject, future, future);
+        queue.add( jsonObjectRequest );
+
+
+            Log.d("THREADTEST", "waiting for PUT future.get");
+
+            future.isDone();
+
+
+        ourMainAct.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ourMainAct.tryGetRequestThreadAndLoadCal();
+            }
+        });// this will block
+
+            Log.d("THREADTEST", "future.get PUT finished");
+
+            /*
+        } catch (InterruptedException e) {
+            Log.d("THREADTEST", "future interruption");
+            // exception handling
+        } catch (
+                ExecutionException e) {
+            // exception handling
+            Log.d("THREADTEST", "execution exception");
+        }
+
+             */
+
+    }
+
     public void trySynchHTTPGetRequestForJSONArray(String url)
     {
         RequestFuture<JSONArray> future = RequestFuture.newFuture();
@@ -188,6 +248,42 @@ public class httpRequest extends Thread
                 ExecutionException e) {
             // exception handling
             Log.d("THREADTEST", "execution exception");
+        }
+    }
+
+    public void trySynchHTTPPostRequestForJSONArray(String url)
+    {
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, future, future);
+
+        queue.add(request);
+
+        Log.d("THREADTEST","POST: request added");
+
+        try {
+            Log.d("THREADTEST", "POST: waiting for future.get");
+            jsonObjectPostResult = future.get(); // this will block
+
+
+            ourMainAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ourMainAct.getJSONObjectPostResponse(jsonObjectPostResult);
+                }
+            });
+
+            Log.d("THREADTEST", "future.POST finished");
+        }
+        catch ( InterruptedException e )
+        {
+            Log.d("THREADTEST", "POST future interruption");
+            // exception handling
+        }
+        catch ( ExecutionException e )
+        {
+            // exception handling
+            Log.d("THREADTEST", "POST execution exception");
         }
     }
 }

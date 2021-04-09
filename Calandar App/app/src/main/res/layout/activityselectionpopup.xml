@@ -15,17 +15,16 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:gravity="center"
-        android:text="This Is a Pop Up"
-        android:textColor="@color/Black"
-        />
+        android:text="Select an Activity!"
+        android:textColor="@color/Black" />
 
     <Button
         android:id="@+id/completeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F6F2F2"
-        android:onClick="completedDayButton"
-        android:text="Complete"
+        android:onClick="activitySelectionButtons"
+        android:text="Activity 1"
         app:backgroundTint="@color/Green" />
 
     <Button
@@ -33,17 +32,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#E3D9D9"
-        android:onClick="nonCompletedDayButton"
-        android:text="Not Complete"
+        android:onClick="activitySelectionButtons"
+        android:text="Activity 2"
         app:backgroundTint="@color/DarkRed" />
 
     <Button
         android:id="@+id/clearColorButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#452B2B"
-        android:onClick="clearDayButton"
-        android:text="Clear Day?"
+        android:background="#784040"
+        android:onClick="activitySelectionButtons"
+        android:text="Activity 3"
         android:textColor="@color/Black"
-        app:backgroundTint="@color/BlanchedAlmond" />
+        app:backgroundTint="@color/Aqua" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFEB3B"
+        android:onClick="activitySelectionButtons"
+        android:text="Activity 4"
+        app:backgroundTint="#FFEB3B" />
 </LinearLayout>
