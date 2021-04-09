@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/promptLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="10dp"
+    tools:context=".MainActivity"
+    tools:ignore="HarcodedText">
 
     <TextView
         android:id="@+id/user_prompt_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="What is the activity you want track : "
-        android:textAppearance="?textAppearanceBody1"
-        />
+        android:textAppearance="?textAppearanceBody1" />
 
     <EditText
         android:id="@+id/new_activity_input"
@@ -22,5 +25,65 @@
         <requestFocus />
 
     </EditText>
+
+
+    <Button
+        android:id="@+id/pick_complete_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Pick Color"
+        android:background="@color/LightSlateGray"
+        android:backgroundTint="@color/LightGrey"
+        app:backgroundTint="@color/LightSlateGray" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:text="Complete Color: "
+        android:textSize="18sp" />
+
+    <View
+        android:id="@+id/preview_complete_color"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:background="@color/DarkGray" />
+
+    <Button
+        android:id="@+id/pick_incomplete_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Pick Color"
+        android:background="@color/LightSlateGray"
+        android:backgroundTint="@color/LightGrey"
+        app:backgroundTint="@color/LightSlateGray" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:text="Incomplete Color: "
+        android:textSize="18sp" />
+
+    <View
+        android:id="@+id/preview_incomplete_color"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:background="@color/DarkGray" />
+
 
 </LinearLayout>
