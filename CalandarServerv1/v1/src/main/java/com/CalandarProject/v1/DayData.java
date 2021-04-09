@@ -17,15 +17,17 @@ public class DayData {
 		this.activity2DayStatus = "1";
 		this.activity3DayStatus = "1";
 		this.activity4DayStatus = "1";
+		activityStatus = new String[] {"1","1","1","1"};
 	}
 	
-	public DayData(String user, String dayOfMonth, String activity1DayStatus, String activity2DayStatus, String activity3DayStatus, String activity4DayStatus) {
+	public DayData(String user, String dayOfYear, String activity1DayStatus, String activity2DayStatus, String activity3DayStatus, String activity4DayStatus) {
 		this.user = user;
-		this.dayOfYear = dayOfMonth;
+		this.dayOfYear = dayOfYear;
 		this.activity1DayStatus = activity1DayStatus;
 		this.activity2DayStatus = activity2DayStatus;
 		this.activity3DayStatus = activity3DayStatus;
 		this.activity4DayStatus = activity4DayStatus;
+		activityStatus = new String[] {"activity1DayStatus","activity2DayStatus","activity3DayStatus","activity4DayStatus"};
 	}
 	
 	public DayData(String user, String dayNum) {
@@ -82,13 +84,13 @@ public class DayData {
 
 	@Override
 	public String toString() {
-		return "DayData [user=" + user + ", dayOfYear=" + dayOfYear + ", activity1DayStatus=" + activity1DayStatus
-				+ ", activity2DayStatus=" + activity2DayStatus + ", activity3DayStatus=" + activity3DayStatus
-				+ ", activity4DayStatus=" + activity4DayStatus + "]";
+		return "DayData [user=" + user + ", dayOfYear=" + dayOfYear + ", activity1DayStatus=" + activityStatus[0]
+				+ ", activity2DayStatus=" + activityStatus[1] + ", activity3DayStatus=" + activityStatus[2]
+				+ ", activity4DayStatus=" + activityStatus[3] + "]";
 	}
 
 	public String[] toStringArray() {
-		return new String[] {user ,dayOfYear, activity1DayStatus, activity2DayStatus, activity3DayStatus, activity4DayStatus}; 
+		return new String[] {user ,dayOfYear, activityStatus[0], activityStatus[1], activityStatus[2], activityStatus[3]}; 
 	}
 	
 }
