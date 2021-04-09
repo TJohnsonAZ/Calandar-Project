@@ -37,6 +37,20 @@ public class DayDataController {
 	@PutMapping("/dayData")
 	public DayData updateDayData( @RequestParam(value = "dayNum", required = true ) String dayNum,
 									@RequestBody DayData dayData) {
+		
+		DayData previousData = DayDatabase.getDayData(dayNum);
+		if(dayData.getActivity1DayStatus().equals("-1")) {
+			dayData.setActivity1DayStatus(previousData.getActivity1DayStatus());
+		}
+		if(dayData.getActivity2DayStatus().equals("-1")) {
+			dayData.setActivity2DayStatus(previousData.getActivity2DayStatus());
+		}
+		if(dayData.getActivity3DayStatus().equals("-1")) {
+			dayData.setActivity3DayStatus(previousData.getActivity3DayStatus());
+		}
+		if(dayData.getActivity4DayStatus().equals("-1")) {
+			dayData.setActivity4DayStatus(previousData.getActivity4DayStatus());
+		}
 		return DayDatabase.updateDayData(dayNum, dayData);
 	}
 	

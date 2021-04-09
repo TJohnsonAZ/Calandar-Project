@@ -37,10 +37,4 @@ public class UserController {
 									@RequestBody User user) {
 		return UserDatabase.updateUser(userID, user);
 	}
-	
-	// delete
-	@DeleteMapping("/user")
-	public User removeActivity( @RequestParam(value = "userID", required = true) String userID) {
-		return UserDatabase.deleteUser(userID);
-	}
 }
