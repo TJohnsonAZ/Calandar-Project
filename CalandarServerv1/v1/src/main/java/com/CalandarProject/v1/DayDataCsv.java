@@ -28,15 +28,14 @@ public class DayDataCsv {
 		
 		FileWriter outputFile = new FileWriter(file);
 		
-		for(User user : UserDatabase.getAllUsers()) {
+		CSVWriter writer = new CSVWriter(outputFile);
+		
+		String[] header = {"UserID", "Day of Year", "Activity1 Status", "Activity2 Status", "Activity3 Status", "Activity4 Status"};
+		writer.writeNext(header);
+		
 			try {
 				
-				CSVWriter writer = new CSVWriter(outputFile);
-				
-				String[] header = {"UserID", "Day of Year", "Activity1 Status", "Activity2 Status", "Activity3 Status", "Activity4 Status"};
-				writer.writeNext(header);
-					
-				for(DayData dayData : DayDatabase.getDayDataByUser(user.getUserID())) {
+				for(DayData dayData : DayDatabase.getAllDayData() ) {
 					writer.writeNext(dayData.toStringArray());
 				}
 					
@@ -46,7 +45,6 @@ public class DayDataCsv {
 			catch(IOException e) {
 				e.printStackTrace();
 			}
-		}
 	}
 		
 	@PostConstruct
@@ -62,10 +60,6 @@ public class DayDataCsv {
 			
 			for(String[] row : allData) {
 				DayData newDayData = new DayData(row[0], row[1], row[2], row[3], row[4], row[5]);
-				if(UserDatabase.getUser(newDayData.getUser()) == null) {
-					User u = new User("", newDayData.getUser());
-					UserDatabase.addUser(u);
-				}
 				System.out.println(newDayData);
 				DayDatabase.addDayData(newDayData);
 			}
