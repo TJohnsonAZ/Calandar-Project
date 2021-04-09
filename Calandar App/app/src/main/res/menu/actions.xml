@@ -3,12 +3,9 @@
 
     <item
         android:id="@+id/addEvent"
-        android:title="Add Event"
+        android:icon="@drawable/ic_baseline_add_box_24"
+        android:title="Add Activity"
         />
 
-    <item
-        android:id="@+id/addNotes"
-        android:title="Add Notes"
-        />
 
 </menu>

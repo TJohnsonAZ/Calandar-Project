@@ -210,6 +210,7 @@
             android:textAlignment="center"
             android:textColor="@color/Black"
             android:textSize="40sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -599,6 +600,11 @@
         android:layout_height="wrap_content"
         android:text="Clear Calendar"
         android:onClick="clearCal"/>
+
+    <TextView
+        android:id="@+id/USERIDDISPLAY"
+        android:layout_width="match_parent"
+        android:layout_height="172dp" />
 
 
 </LinearLayout>

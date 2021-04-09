@@ -1,17 +1,25 @@
 package com.example.calandarapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -40,7 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     TextView dayClickedOn;
 
-    PopupWindow theWindowForPopping;
+    PopupWindow setDayInformationWindow;
+
+    PopupWindow chooseActivityWindow;
 
     Boolean previousDayInfoSet = true;
 
@@ -50,21 +60,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     JSONArray jsonArrayFromGet;
 
+    JSONObject jsonObjectPost;
+
     httpRequest httpRequestMaker;
+
+    String UUIDForUser1 = "04dd4132-6341-4394-a9bb-1dbfe4d24906";
+
+    Activity activity1;
+
+    Activity activity2 = new Activity("", 2);
+
+    Activity activity3 = new Activity("", 3);
+
+    Activity activity4 = new Activity("", 4);
+
+    Activity currentActivity;
+
+    final Context context = this;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        httpRequestMaker = new httpRequest( this );
+        //the integer param represents the function to run in the thread, this object not used for that.
+        //this object only used for making put requests, just havent changed the name yet.
+        httpRequestMaker = new httpRequest( this, 0 );
 
+        //tryPostRequestThread();
 
-        Log.d("THREADTESTBeforeRun","successVal: " + httpRequestMaker.requestSuccess);
-
-        tryGetRequestThreadAndLoadCal();
-
-        Log.d("THREADTEST","Finished value: " + httpRequestMaker.requestSuccess);
         //prevents dark mode from doing anything
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -72,7 +96,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
+
         String calandarNameFromUser = intent.getStringExtra(MainMenu.CALNAME_MESSAGE);
+
+        //create a new activity for the user
+        activity1 = new Activity(calandarNameFromUser, 1);
+
+        activity1.setExistence( true );
+
+        activity1.setColors( getResources().getColor(R.color.LimeGreen), getResources().getColor(R.color.Crimson));
+
+        currentActivity = activity1;
+
+        tryGetRequestThreadAndLoadCal();
 
         Log.d("Cal name", " " + calandarNameFromUser);
 
@@ -152,6 +188,82 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.actions, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.addEvent:
+                LayoutInflater popup = LayoutInflater.from(context);
+                View promptsView = popup.inflate(R.layout.prompts, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText newUserActivity = (EditText) promptsView.findViewById(R.id.new_activity_input);
+
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                createNewActivity( newUserActivity.getText().toString() );
+                            }
+
+                        })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog newActivityAlertDialog = alertDialogBuilder.create();
+
+                newActivityAlertDialog.show();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void createNewActivity(String newActName)
+    {
+        if(!activity2.exists())
+        {
+            activity2.activityName = newActName;
+
+            activity2.setExistence( true );
+
+            activity2.setColors(getResources().getColor(R.color.Goldenrod),getResources().getColor(R.color.DarkOrange));
+        }
+        else if(!activity3.exists())
+        {
+            activity3.activityName = newActName;
+
+            activity3.setExistence( true );
+
+            activity3.setColors(getResources().getColor(R.color.CadetBlue),getResources().getColor(R.color.IndianRed));
+        }
+        else if(!activity4.exists())
+        {
+            activity4.activityName = newActName;
+
+            activity4.setExistence( true );
+
+            activity4.setColors(getResources().getColor(R.color.DarkSeaGreen),getResources().getColor(R.color.HotPink));
+        }
+    }
+
     /*
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
@@ -226,9 +338,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void tryGetRequestThreadAndLoadCal()
+    public void tryGetRequestThreadAndLoadCal()
     {
-        httpRequest httpReqThread = new httpRequest(this);
+        //1 means run the get request
+        httpRequest httpReqThread = new httpRequest(this, 1);
+
+        httpReqThread.start();
+
+    }
+
+    private void tryPostRequestThread()
+    {
+        //2 means run a post request.
+        httpRequest httpReqThread = new httpRequest(this, 2);
 
         httpReqThread.start();
 
@@ -242,6 +364,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getJSONObjectPostResponse(JSONObject jsonObjectPost)
+    {
+        this.jsonObjectPost = jsonObjectPost;
+        ((TextView)findViewById(R.id.USERIDDISPLAY)).setText(jsonObjectPost.toString());
     }
 
     private void addIdsToDayId()
@@ -305,8 +433,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setDayInformationPopUp()
     {
         View customView = getLayoutInflater().inflate(R.layout.realpopupwindow, null);
-        theWindowForPopping = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        theWindowForPopping.showAtLocation((LinearLayout)findViewById(R.id.mainactivityid), Gravity.CENTER, 0, 0);
+        setDayInformationWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        setDayInformationWindow.showAtLocation((LinearLayout)findViewById(R.id.mainactivityid), Gravity.CENTER, 0, 0);
+    }
+
+    private void setActivityInformationPopUp()
+    {
+        View customView = getLayoutInflater().inflate(R.layout.activityselectionpopup, null);
+        chooseActivityWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        chooseActivityWindow.showAtLocation((LinearLayout)findViewById(R.id.mainactivityid), Gravity.CENTER, 0, 0);
     }
 
     @Override
@@ -321,13 +456,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if( subStringDay.equals("day") && previousDayInfoSet)
         {
             previousDayInfoSet = false;
-            setDayInformationPopUp();
+
+            setActivityInformationPopUp();
+
             dayClickedOn = aView;
         }
     }
 
-    public void nonCompletedDayButton(View view) throws JSONException {
+    public void activitySelectionButtons(View view) throws JSONException {
 
+        Button activityButtonClickedOn = (Button)view;
+
+        String getActNameAsString = activityButtonClickedOn.getText().toString();
+
+        Log.d("ACTNAMEASSTRING","num: " + getActNameAsString);
+
+        String getActNumberAsString = getActNameAsString.substring( 9,10 );
+
+        Log.d("ACTNUM","num: " + getActNumberAsString);
+
+        int actNum = Integer.parseInt(getActNumberAsString);
+
+        Log.d("ACTNUMMM","num: " + "" + actNum);
+
+        Activity anActivity = getActivity( actNum );
+
+        if( anActivity.exists() )
+        {
+            currentActivity = anActivity;
+
+            loadCalWithDays();
+
+            TextView calandarNameTitle = (TextView)findViewById(R.id.calendarName);
+
+            calandarNameTitle.setText("Activity: " + anActivity.activityName);
+
+            chooseActivityWindow.dismiss();
+
+            setDayInformationPopUp();
+        }
+        else
+        {
+            Log.d("ACTNUMMM","false");
+        }
+
+    }
+
+    public void nonCompletedDayButton( View view ) throws JSONException {
+        
         String dayNumberAsString = dayClickedOn.getText().toString();
 
         int dayNumberAsInt = Integer.parseInt(dayNumberAsString);
@@ -338,27 +514,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         randCalendar.set(2021, monthNameAsNumber, dayNumberAsInt);
 
-        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR) + 1;
+        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR);
 
         dayNumberAsString = "" + dayOfYear;
 
         String urlForPutRequest;
 
-        dayClickedOn.setBackgroundColor( getResources().getColor(R.color.Crimson) );
+        //dayClickedOn.setBackgroundColor( currentActivity.nonCompletionColor );
 
-        theWindowForPopping.dismiss();
+        setDayInformationWindow.dismiss();
 
         previousDayInfoSet = true;
 
-        JSONObject updateDayJSONObject = new JSONObject().put("dayOfYear", dayNumberAsString);
+        JSONObject updateDayJSONObject = new JSONObject().put("user", UUIDForUser1);
+
+        setValuesForPutJSONObject( updateDayJSONObject, 2 );
+
+        //Log.d("CODEEEEE","" + updateDayJSONObject.toString() );
+
+        /*
         updateDayJSONObject.put("activity1DayStatus","2");
         updateDayJSONObject.put("activity2DayStatus","0");
         updateDayJSONObject.put("activity3DayStatus","0");
-        updateDayJSONObject.put("activity2DayStatus","0");
+        updateDayJSONObject.put("activity4DayStatus","0");
+        */
+
 
         urlForPutRequest = String.format("http://142.11.236.52:8080/dayData?dayNum=%s", dayNumberAsString );
 
         httpRequestMaker.tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
+
+        Log.d("THREADTEST", "COOKIE");
+
+        //tryGetRequestThreadAndLoadCal();
+
+        //dayId.get(dayNumberAsInt).setBackgroundColor( currentActivity.nonCompletionColor );
     }
 
     public void completedDayButton(View view) throws JSONException {
@@ -373,7 +563,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         randCalendar.set(2021, monthNameAsNumber, dayNumberAsInt);
 
-        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR) + 1;
+        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR);
 
         dayNumberAsString = "" + dayOfYear;
 
@@ -381,21 +571,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        dayClickedOn.setBackgroundColor( getResources().getColor(R.color.LimeGreen) );
+        //dayClickedOn.setBackgroundColor( currentActivity.completionColor );
 
-        theWindowForPopping.dismiss();
+        setDayInformationWindow.dismiss();
 
         previousDayInfoSet = true;
 
-        JSONObject updateDayJSONObject = new JSONObject().put("dayOfYear", dayNumberAsString);
+        JSONObject updateDayJSONObject = new JSONObject().put("user", UUIDForUser1);
+
+        setValuesForPutJSONObject( updateDayJSONObject, 3 );
+
+        /*
         updateDayJSONObject.put("activity1DayStatus","3");
         updateDayJSONObject.put("activity2DayStatus","0");
         updateDayJSONObject.put("activity3DayStatus","0");
-        updateDayJSONObject.put("activity2DayStatus","0");
+        updateDayJSONObject.put("activity4DayStatus","0");
+
+         */
 
         urlForPutRequest = String.format("http://142.11.236.52:8080/dayData?dayNum=%s", dayNumberAsString );
 
         httpRequestMaker.tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
+
+        Log.d("THREADTEST", "COOKIE");
+
+        //tryGetRequestThreadAndLoadCal();
+
+        //dayId.get(dayNumberAsInt).setBackgroundColor( currentActivity.completionColor );
     }
 
     public void clearDayButton(View view) throws JSONException {
@@ -410,29 +612,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         randCalendar.set(2021, monthNameAsNumber, dayNumberAsInt);
 
-        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR) + 1;
+        int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR);
 
         dayNumberAsString = "" + dayOfYear;
 
         String urlForPutRequest;
 
 
+        //dayClickedOn.setBackgroundColor( getResources().getColor(R.color.White) );
 
-        dayClickedOn.setBackgroundColor( getResources().getColor(R.color.White) );
-
-        theWindowForPopping.dismiss();
+        setDayInformationWindow.dismiss();
 
         previousDayInfoSet = true;
 
-        JSONObject updateDayJSONObject = new JSONObject().put("dayOfYear", dayNumberAsString);
+        JSONObject updateDayJSONObject = new JSONObject().put("user", UUIDForUser1);
+        setValuesForPutJSONObject( updateDayJSONObject, 1 );
+
+        /*
         updateDayJSONObject.put("activity1DayStatus","1");
         updateDayJSONObject.put("activity2DayStatus","0");
         updateDayJSONObject.put("activity3DayStatus","0");
-        updateDayJSONObject.put("activity2DayStatus","0");
+        updateDayJSONObject.put("activity4DayStatus","0");
+
+         */
 
         urlForPutRequest = String.format("http://142.11.236.52:8080/dayData?dayNum=%s", dayNumberAsString );
 
         httpRequestMaker.tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
+
+        Log.d("THREADTEST", "COOKIE");
+
+        //tryGetRequestThreadAndLoadCal();
+
+
+
+       // dayId.get(dayNumberAsInt).setBackgroundColor( getResources().getColor(R.color.White) );
     }
 
 
@@ -448,6 +662,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         //clear the calendar or else days beyond the current months capacity dont change color
         clearCalandar();
+
         int monthNameAsNumber = calandar.monthNameToNum.get( calandar.getCurrentMonthName() );
         //jsonArrayFromGet = httpRequestMaker.jsonArrayFromRequest;
         //when starting day is used as an index in dayId array it is correct
@@ -473,7 +688,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int aDayInDayIdList;
 
         //index 0 represents day 1 in the year, we start here for january, will change in the future
-        int JSONArrayIndex = dayOfYear;
+        //-1 because json array starts at index 0 and the first day of the year starts at 1
+        int JSONArrayIndex = dayOfYear - 1;
+
+        String activityStatus = "activity" + currentActivity.activityNumber + "DayStatus";
 
         //start at first day of month, aligns with first day index in dayId list.
         //aDayInDayIdList < numberOfDaysInMonth + firstDayOfAMonth -- iterate from first day of month in dayId list to last day of month in id list
@@ -482,13 +700,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             JSONObject aDayObj = jsonArrayFromGet.getJSONObject(JSONArrayIndex);
 
             //this stuff dont work no more after adam changed some stuff
-            if(aDayObj.get("activity1DayStatus").equals("3"))
+            if(aDayObj.get(activityStatus).equals("3"))
             {
-                dayId.get(aDayInDayIdList).setBackgroundColor(getResources().getColor(R.color.LimeGreen));
+                dayId.get(aDayInDayIdList).setBackgroundColor( currentActivity.completionColor );
             }
-            else if(aDayObj.get("activity1DayStatus").equals("2"))
+            else if(aDayObj.get(activityStatus).equals("2"))
             {
-                dayId.get(aDayInDayIdList).setBackgroundColor(getResources().getColor(R.color.Crimson));
+                dayId.get(aDayInDayIdList).setBackgroundColor(currentActivity.nonCompletionColor);
             }
             else
             {
@@ -508,6 +726,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             dayId.get(aDayIndex).setBackgroundColor(getResources().getColor(R.color.White));
         }
+    }
+
+    public Activity getActivity( int actNum )
+    {
+        if(actNum == 1)
+        {
+            return activity1;
+        }
+        else if(actNum == 2)
+        {
+            Log.d("ACTNUMMM","activity 2");
+            return activity2;
+        }
+        else if(actNum == 3)
+        {
+            return activity3;
+        }
+        else
+        {
+            return activity4;
+        }
+    }
+
+    //mark code indicates completion, incompletion or clearing of the day
+    public void setValuesForPutJSONObject(JSONObject jsonObject, int markCode) throws JSONException {
+
+        int activityToMark = currentActivity.activityNumber;
+
+        if( activityToMark == 1 )
+        {
+            jsonObject.put("activity1DayStatus", markCode + "");
+            jsonObject.put("activity2DayStatus","-1");
+            jsonObject.put("activity3DayStatus","-1");
+            jsonObject.put("activity4DayStatus","-1");
+        }
+        else if( activityToMark == 2 )
+        {
+            jsonObject.put("activity1DayStatus", "-1");
+            jsonObject.put("activity2DayStatus",markCode + "");
+            jsonObject.put("activity3DayStatus","-1");
+            jsonObject.put("activity4DayStatus","-1");
+        }
+        else if( activityToMark == 3 )
+        {
+            jsonObject.put("activity1DayStatus", "-1");
+            jsonObject.put("activity2DayStatus","-1");
+            jsonObject.put("activity3DayStatus",markCode + "");
+            jsonObject.put("activity4DayStatus","-1");
+        }
+        else
+        {
+            jsonObject.put("activity1DayStatus", "-1");
+            jsonObject.put("activity2DayStatus","-1");
+            jsonObject.put("activity3DayStatus","-1");
+            jsonObject.put("activity4DayStatus",markCode + "");
+        }
+
+
+
+
     }
 
 
