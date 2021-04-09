@@ -13,12 +13,6 @@ public class UserDatabase {
 			return user;
 		}
 		
-		public static User deleteUser( String id ) {
-			User user = getUser( id );
-			userData.remove( user );
-			return user;
-		}
-		
 		public static User updateUser( String id, User user ) {
 			User userToUpdate = getUser( id );
 			if( userToUpdate != null ) {
