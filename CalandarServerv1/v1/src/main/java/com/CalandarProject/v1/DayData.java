@@ -8,6 +8,8 @@ public class DayData {
 	private String activity2DayStatus;
 	private String activity3DayStatus;
 	private String activity4DayStatus;
+	
+	private String activityStatus[];
 		
 	public DayData() {
 		this.user = "";
