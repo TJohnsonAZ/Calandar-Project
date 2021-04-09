@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,6 +30,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import top.defaults.colorpicker.ColorPickerPopup;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -78,6 +81,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     final Context context = this;
 
+    Button mSetColorButton;
+
+    Button pickCompleteColor;
+
+    Button pickIncompleteColor;
+
+    View completeColorPreview;
+
+    View incompleteColorPreview;
+
+    int incompleteColor;
+
+    int completeColor;
+
 
 
     @Override
@@ -94,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         Intent intent = getIntent();
 
@@ -206,17 +225,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 alertDialogBuilder.setView(promptsView);
 
+                pickCompleteColor =  promptsView.findViewById(R.id.pick_complete_color);
+                pickIncompleteColor = promptsView.findViewById(R.id.pick_incomplete_color);
+
+
+                incompleteColorPreview = promptsView.findViewById(R.id.preview_incomplete_color);
+                completeColorPreview = promptsView.findViewById(R.id.preview_complete_color);
+
+                completeColor = 0;
+                incompleteColor = 0;
+
+                pickCompleteColor.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new ColorPickerPopup.Builder(MainActivity.this)
+                                        .initialColor(Color.RED)
+                                        .enableBrightness(true)
+                                        .okTitle("Choose")
+                                        .cancelTitle("Cancel")
+                                        .showIndicator(true)
+                                        .showValue(true)
+                                        .build()
+                                        .show(v, new ColorPickerPopup.ColorPickerObserver() {
+                                            @Override
+                                            public void onColorPicked(int color) {
+                                                completeColor = color;
+                                                completeColorPreview.setBackgroundColor(completeColor);
+                                            }
+                                        });
+                            }
+                        });
+
+                pickIncompleteColor.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new ColorPickerPopup.Builder(MainActivity.this)
+                                        .initialColor(Color.RED)
+                                        .enableBrightness(true)
+                                        .okTitle("Choose")
+                                        .cancelTitle("Cancel")
+                                        .showIndicator(true)
+                                        .showValue(true)
+                                        .build()
+                                        .show(v, new ColorPickerPopup.ColorPickerObserver() {
+                                            @Override
+                                            public void onColorPicked(int color) {
+                                                incompleteColor = color;
+                                                incompleteColorPreview.setBackgroundColor(incompleteColor);
+                                            }
+                                        });
+                            }
+                        });
+
+
+
+
+
                 final EditText newUserActivity = (EditText) promptsView.findViewById(R.id.new_activity_input);
 
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                createNewActivity( newUserActivity.getText().toString() );
-                            }
-
-                        })
+                        .setPositiveButton("OK", (dialog, id) -> createNewActivity( newUserActivity.getText().toString(), completeColor, incompleteColor  ))
                         .setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -236,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void createNewActivity(String newActName)
+    public void createNewActivity(String newActName, int activityCompleteColor, int activityIncompleteColor)
     {
         if(!activity2.exists())
         {
@@ -244,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             activity2.setExistence( true );
 
-            activity2.setColors(getResources().getColor(R.color.Goldenrod),getResources().getColor(R.color.DarkOrange));
+            activity2.setColors(activityCompleteColor, activityIncompleteColor);
         }
         else if(!activity3.exists())
         {
@@ -252,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             activity3.setExistence( true );
 
-            activity3.setColors(getResources().getColor(R.color.CadetBlue),getResources().getColor(R.color.IndianRed));
+            activity3.setColors(activityCompleteColor, activityIncompleteColor);
         }
         else if(!activity4.exists())
         {
@@ -260,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             activity4.setExistence( true );
 
-            activity4.setColors(getResources().getColor(R.color.DarkSeaGreen),getResources().getColor(R.color.HotPink));
+            activity4.setColors(activityCompleteColor, activityIncompleteColor);
         }
     }
 
