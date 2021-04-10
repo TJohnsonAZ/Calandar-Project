@@ -21,9 +21,6 @@ public class DayDataCsv {
 		
 	@PreDestroy
 	public void writeToCSV() throws IOException {
-		// get all users
-			// iterate over users
-				//try catch inside loop
 		
 		
 		FileWriter outputFile = new FileWriter(file);

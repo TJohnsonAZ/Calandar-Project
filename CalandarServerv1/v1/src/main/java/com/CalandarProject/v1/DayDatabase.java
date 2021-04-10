@@ -13,7 +13,7 @@ public class DayDatabase {
 	}
 	
 	public static DayData updateDayData(String day, DayData dayStatus) {
-		DayData dd = getDayData(day);
+		DayData dd = getDayData(day, dayStatus.getUser());
 		if(dd != null) {
 			dd.setActivity1DayStatus(dayStatus.getActivity1DayStatus());
 			dd.setActivity2DayStatus(dayStatus.getActivity2DayStatus());
@@ -23,9 +23,9 @@ public class DayDatabase {
 		return dd;
 	}
 	
-	public static DayData getDayData(String day) {
+	public static DayData getDayData(String day, String user) {
 		for(int i = 0; i < data.size(); i++) {
-			if(data.get(i).getDayOfYear().equals(day)) {
+			if(data.get(i).getDayOfYear().equals(day) && data.get(i).getUser().equals(user)) {
 				return data.get(i);
 			}
 		}
