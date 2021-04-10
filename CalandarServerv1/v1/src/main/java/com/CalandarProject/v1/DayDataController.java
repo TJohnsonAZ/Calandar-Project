@@ -21,10 +21,7 @@ public class DayDataController {
 	
 	// retrieve
 	@GetMapping("/dayData")
-	public Object retrieveDayData(@RequestParam(value = "dayNum", required = false) String dayNum) {
-		if(dayNum != null) {
-		 	return DayDatabase.getDayData(dayNum);	
-		}
+	public Object retrieveDayData() {
 		return DayDatabase.getAllDayData();
 	}
 	
@@ -38,7 +35,7 @@ public class DayDataController {
 	public DayData updateDayData( @RequestParam(value = "dayNum", required = true ) String dayNum,
 									@RequestBody DayData dayData) {
 		
-		DayData previousData = DayDatabase.getDayData(dayNum);
+		DayData previousData = DayDatabase.getDayData(dayNum, dayData.getUser());
 		if(dayData.getActivity1DayStatus().equals("-1")) {
 			dayData.setActivity1DayStatus(previousData.getActivity1DayStatus());
 		}
