@@ -6,7 +6,7 @@ public class Summary {
     int[] completeCounter, incompleteCounter, clearCounter, highestStreak;
     int currentStreak1, currentStreak2, currentStreak3, currentStreak4, numActivities, highestOverallStreak;
 
-    public Summary(int startDate, int endDate) {
+    public Summary(int startDate, int endDate, String user) {
        summaryPeriod = new DayData[endDate - startDate + 1];
        completeCounter = new int[4];
        incompleteCounter = new int[4];
@@ -24,7 +24,7 @@ public class Summary {
 
        // populate array with information about days in the given period and get summary information
        for (index = 0; index < summaryPeriod.length; index++) {
-           summaryPeriod[index] = DayDatabase.getDayData(String.valueOf(dayIterator));
+           summaryPeriod[index] = DayDatabase.getDayData(String.valueOf(dayIterator), user);
 
            analyzeDay(summaryPeriod[index]);
 
@@ -45,7 +45,7 @@ public class Summary {
            else {
                loopEnd = true;
            }
-           
+
            index++;
        }
     }

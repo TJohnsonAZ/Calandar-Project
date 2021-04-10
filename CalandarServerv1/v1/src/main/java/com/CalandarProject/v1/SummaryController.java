@@ -9,7 +9,8 @@ public class SummaryController {
 
     @GetMapping("/summary")
     public Summary summary(@RequestParam(value = "startDate") int start,
-                           @RequestParam(value = "endDate") int end) {
-        return new Summary(start, end);
+                           @RequestParam(value = "endDate") int end,
+                           @RequestParam(value = "user") String user) {
+        return new Summary(start, end, user);
     }
 }
