@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 	
-	// Create
+	// Create user object
 	@PostMapping("/user")
 	public User createUser(@RequestParam(value = "username") String username) {
 		User user = new User(username);
@@ -21,7 +21,7 @@ public class UserController {
 		return 	UserDatabase.addUser(user);
 	}
 	
-	// retrieve
+	// retrieves user object from the database
 	@GetMapping("/user")
 	public Object retrieveUser(@RequestParam(value = "userID", required = false) String userID) {
 		if(userID != null) {
@@ -30,7 +30,7 @@ public class UserController {
 		return UserDatabase.getAllUsers();
 	}
 	
-	// update
+	// updates user with a new username
 	@PutMapping("/user")
 	public User updateUser( @RequestParam(value = "userID", required = true ) String userID,
 									@RequestBody User user) {
