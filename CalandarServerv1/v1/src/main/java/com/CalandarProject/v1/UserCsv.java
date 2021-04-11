@@ -19,6 +19,9 @@ public class UserCsv {
 	
 	private static final String file = "Users.csv";
 	
+	/**
+	 * Puts all of the current users into a csv to be saved. Runs on shutdown of the server.
+	 */
 	@PreDestroy
 	public void writeToCSV() {
 			
@@ -42,7 +45,10 @@ public class UserCsv {
 			e.printStackTrace();
 		}
 	}
-		
+	
+	/**
+	 * Reads all data from the user CSV and puts them into an active database. Runs on startup of the server. 
+	 */
 	@PostConstruct
 	public void readAllDataAtOnce() { 
 		try {

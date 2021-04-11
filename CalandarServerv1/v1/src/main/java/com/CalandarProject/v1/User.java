@@ -13,11 +13,20 @@ public class User {
 		username = "Unnamed User " + userID;
 	}
 	
+	/**
+	 * Creates a new user. Generates random, unique ID
+	 * @param username chosen username
+	 */
 	public User( String username ) {
 		this.userID = UUID.randomUUID().toString();
 		this.username = username;
 	}
 	
+	/**
+	 * Creates a new User, used for updating an existing user
+	 * @param username new username for the user
+	 * @param userID existing userID for the user
+	 */
 	public User( String username, String userID ) {
 		this.username = username;
 		this.userID = userID;
