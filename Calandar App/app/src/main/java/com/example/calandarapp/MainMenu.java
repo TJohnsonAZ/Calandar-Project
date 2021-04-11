@@ -21,6 +21,8 @@ public class MainMenu extends AppCompatActivity {
     Boolean clickedConfirm = false;
     Boolean confirmedChoice = false;
     TextView welcomeViewTextBox;
+    String userNumber;
+    public static final String USERNUMBER = "User Number";
 
     public static final String CALNAME_MESSAGE = "CalandarName";
 
@@ -28,6 +30,14 @@ public class MainMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menue);
+
+        Intent intent = getIntent();
+
+        userNumber = intent.getStringExtra(UserLoginScreen.userNumberMsg);
+
+        Log.d("USERTEST: ", userNumber);
+
+
 
         nameCalandarBttn = (Button)findViewById(R.id.CreateFirstCalButton);
         welcomeViewTextBox = (TextView)findViewById(R.id.WelcomeTextView);
@@ -78,6 +88,8 @@ public class MainMenu extends AppCompatActivity {
                         String message = firstCalandarName;
 
                         intent.putExtra(CALNAME_MESSAGE, firstCalandarName);
+
+                        intent.putExtra(USERNUMBER, userNumber);
 
                         startActivity(intent);
                     }
