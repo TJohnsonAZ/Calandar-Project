@@ -165,7 +165,7 @@ public class Summary {
         return completeCounter;
     }
 
-    public int[] getIncompelteCounter() {
+    public int[] getIncompleteCounter() {
         return incompleteCounter;
     }
 
