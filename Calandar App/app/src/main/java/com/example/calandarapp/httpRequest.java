@@ -18,6 +18,7 @@ import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
@@ -25,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 public class httpRequest extends Thread
 {
 
-    JSONObject jsonObjFromRequest = null;
+    JSONObject jsonObjFromRequest = new JSONObject();
 
     JSONArray jsonArrayFromRequest = new JSONArray();
 
@@ -35,23 +36,41 @@ public class httpRequest extends Thread
 
     RequestQueue queue;
 
-    String urlGetYear = "http://142.11.236.52:8080/userDayData?userID=04dd4132-6341-4394-a9bb-1dbfe4d24906";
+    String urlGetYear = "http://142.11.236.52:8080/userDayData?userID=";
 
-    String UUIDForUser1 = "04dd4132-6341-4394-a9bb-1dbfe4d24906";
+    String UUIDForUser1 = "21a1fab7-b82b-4098-9676-6433ae14962f";
+
+    String UUIDForUser2 = "bd744d11-c499-4c83-9867-e1f5154c2ac4";
+
+    String UUIDForUser3 = "9d2761b8-af7a-4e95-8c2c-48d4e2e98bde";
+
+    String UUIDForUser4 = "cb9d00f8-134c-4cda-89e4-75c4a4b9329b";
 
     String urlPostReq = "http://142.11.236.52:8080/user?username=butts";
+
+    String urlForSummary = "http://142.11.236.52:8080/summary?startDate=8&endDate=10&user=21a1fab7-b82b-4098-9676-6433ae14962f";
 
     int funcToRunInThread;
 
     MainActivity ourMainAct;
 
-    public httpRequest(Context mainActivityContext, int function)
+    int userNumber;
+
+    String activeUserUUID;
+
+    public httpRequest(Context mainActivityContext, int function, int userNumber)
     {
         queue = Volley.newRequestQueue( mainActivityContext );
 
         ourMainAct = (MainActivity) mainActivityContext;
 
         funcToRunInThread = function;
+
+        setActiveUserString( userNumber );
+
+        urlGetYear = urlGetYear + activeUserUUID;
+
+        this.userNumber = userNumber;
     }
 
     public void run()
@@ -63,7 +82,11 @@ public class httpRequest extends Thread
         }
         else if(funcToRunInThread == 2)
         {
-            trySynchHTTPPostRequestForJSONArray(urlPostReq);
+            trySynchHTTPPostRequestForJSONArray( urlPostReq );
+        }
+        else if( funcToRunInThread == 3)
+        {
+            trySynchHTTPGetRequestForJSONObject( urlForSummary );
         }
 
     }
@@ -86,6 +109,13 @@ public class httpRequest extends Thread
                         //textView.setText("Response: " + response.toString());
                         Log.d("success OBJ","REQUEST SUCCESS");
                         jsonObjFromRequest = response;
+
+                        ourMainAct.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ourMainAct.GETREQUESTGOTTEN();
+                            }
+                        });
                     }
                 }, new Response.ErrorListener() {
 
@@ -230,6 +260,7 @@ public class httpRequest extends Thread
 
         try {
             Log.d("THREADTEST", "waiting for future.get");
+
             jsonArrayFromRequest = future.get(); // this will block
 
 
@@ -251,6 +282,36 @@ public class httpRequest extends Thread
         }
     }
 
+
+
+    public void trySynchHTTPGetRequestForJSONObject(String url)
+    {
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null, future, future);
+        queue.add(request);
+
+        Log.d("THREADTEST","request added");
+
+        try {
+            Log.d("THREADTEST", "waiting for future.get aqui");
+            jsonObjFromRequest = future.get(); // this will block
+
+            Log.d("THREADTEST", "future.get finished aqui");
+
+        } catch (InterruptedException e) {
+            Log.d("THREADTEST", "future interruption");
+            // exception handling
+        } catch (
+                ExecutionException e) {
+            // exception handling
+            Log.d("THREADTEST", "execution exception");
+        }
+        catch( Exception e)
+        {
+            Log.d("THREADTEST", "Generic Exception");
+        }
+    }
+
     public void trySynchHTTPPostRequestForJSONArray(String url)
     {
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
@@ -269,7 +330,11 @@ public class httpRequest extends Thread
             ourMainAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ourMainAct.getJSONObjectPostResponse(jsonObjectPostResult);
+                    try {
+                        ourMainAct.getJSONObjectPostResponse(jsonObjectPostResult);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -285,5 +350,29 @@ public class httpRequest extends Thread
             // exception handling
             Log.d("THREADTEST", "POST execution exception");
         }
+    }
+    public void setActiveUserString( int userNumber )
+    {
+        switch( userNumber )
+        {
+            case 1:
+                Log.d("THREADTEST", "active user is in http: 1");
+                activeUserUUID = UUIDForUser1;
+                break;
+
+            case 2:
+                Log.d("THREADTEST", "active user is in http: 2");
+                activeUserUUID = UUIDForUser2;
+                break;
+
+            case 3:
+                activeUserUUID = UUIDForUser3;
+                break;
+
+            case 4:
+                activeUserUUID = UUIDForUser4;
+                break;
+        }
+
     }
 }

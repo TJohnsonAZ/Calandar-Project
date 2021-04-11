@@ -59,6 +59,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     static String urlForHttpReq = "http://142.11.236.52:8080/dayData";
 
+    String UUIDForUser1 = "21a1fab7-b82b-4098-9676-6433ae14962f";
+
+    String UUIDForUser2 = "bd744d11-c499-4c83-9867-e1f5154c2ac4";
+
+    String UUIDForUser3 = "9d2761b8-af7a-4e95-8c2c-48d4e2e98bde";
+
+    String UUIDForUser4 = "cb9d00f8-134c-4cda-89e4-75c4a4b9329b";
+
+    String activeUser;
+
     JSONObject jsonObjectFromGet;
 
     JSONArray jsonArrayFromGet;
@@ -67,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     httpRequest httpRequestMaker;
 
-    String UUIDForUser1 = "04dd4132-6341-4394-a9bb-1dbfe4d24906";
 
     Activity activity1;
 
@@ -95,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     int completeColor;
 
+    int userNumber;
+
 
 
     @Override
@@ -102,9 +113,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //the integer param represents the function to run in the thread, this object not used for that.
         //this object only used for making put requests, just havent changed the name yet.
-        httpRequestMaker = new httpRequest( this, 0 );
+        httpRequestMaker = new httpRequest( this, 0, 0);
 
-        //tryPostRequestThread();
+        httpRequestMaker.tryHTTPGetRequest("http://142.11.236.52:8080/summary?startDate=8&endDate=10&user=21a1fab7-b82b-4098-9676-6433ae14962f");
+
+        Log.d( "SUMMARY: " ,"" + (httpRequestMaker.jsonObjFromRequest).toString() );
 
         //prevents dark mode from doing anything
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -117,6 +130,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
 
         String calandarNameFromUser = intent.getStringExtra(MainMenu.CALNAME_MESSAGE);
+
+        String userNumberString = intent.getStringExtra(MainMenu.USERNUMBER);
+
+        userNumber = Integer.parseInt(userNumberString);
+
+        setActiveUserString( userNumber );
+
+        Log.d("USERTEST", "UserNumInMain: " + userNumberString);
+
+
 
         //create a new activity for the user
         activity1 = new Activity(calandarNameFromUser, 1);
@@ -132,7 +155,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("Cal name", " " + calandarNameFromUser);
 
         TextView calandarNameTitle = (TextView)findViewById(R.id.calendarName);
-        calandarNameTitle.setText("Activity: " + calandarNameFromUser);
+
+        calandarNameTitle.setText("Activity: " + calandarNameFromUser + " User: " + userNumber);
 
         addIdsToDayId();
         setListenersForDays();
@@ -412,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void tryGetRequestThreadAndLoadCal()
     {
         //1 means run the get request
-        httpRequest httpReqThread = new httpRequest(this, 1);
+        httpRequest httpReqThread = new httpRequest(this, 1, userNumber);
 
         httpReqThread.start();
 
@@ -421,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void tryPostRequestThread()
     {
         //2 means run a post request.
-        httpRequest httpReqThread = new httpRequest(this, 2);
+        httpRequest httpReqThread = new httpRequest(this, 2, userNumber);
 
         httpReqThread.start();
 
@@ -431,16 +455,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         try {
             jsonArrayFromGet = jsonArray;
+            Log.d("THREADTEST", "About to load cal");
+            Log.d("THREADTEST", jsonArray.toString());
             loadCalWithDays();
         } catch (JSONException e) {
+            Log.d("THREADTEST", "JSON ARRYA RESPONSE ERROR");
             e.printStackTrace();
         }
     }
 
-    public void getJSONObjectPostResponse(JSONObject jsonObjectPost)
-    {
+    public void getJSONObjectPostResponse(JSONObject jsonObjectPost) throws JSONException {
+
         this.jsonObjectPost = jsonObjectPost;
+
+        Log.d("USERTEST", "ID: " + jsonObjectPost.get("userID").toString());
+
         ((TextView)findViewById(R.id.USERIDDISPLAY)).setText(jsonObjectPost.toString());
+
     }
 
     private void addIdsToDayId()
@@ -597,7 +628,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         previousDayInfoSet = true;
 
-        JSONObject updateDayJSONObject = new JSONObject().put("user", UUIDForUser1);
+        JSONObject updateDayJSONObject = new JSONObject().put("user", activeUser);
 
         setValuesForPutJSONObject( updateDayJSONObject, 2 );
 
@@ -612,6 +643,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         urlForPutRequest = String.format("http://142.11.236.52:8080/dayData?dayNum=%s", dayNumberAsString );
+
+        Log.d("THREADTEST", "PUTJSON" + updateDayJSONObject);
 
         httpRequestMaker.tryHTTPPutRequest(urlForPutRequest, updateDayJSONObject);
 
@@ -648,7 +681,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         previousDayInfoSet = true;
 
-        JSONObject updateDayJSONObject = new JSONObject().put("user", UUIDForUser1);
+        JSONObject updateDayJSONObject = new JSONObject().put("user", activeUser);
 
         setValuesForPutJSONObject( updateDayJSONObject, 3 );
 
@@ -696,7 +729,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         previousDayInfoSet = true;
 
-        JSONObject updateDayJSONObject = new JSONObject().put("user", UUIDForUser1);
+        JSONObject updateDayJSONObject = new JSONObject().put("user", activeUser);
         setValuesForPutJSONObject( updateDayJSONObject, 1 );
 
         /*
@@ -856,6 +889,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+
+    }
+
+    public void GETREQUESTGOTTEN()
+    {
+        Log.d("THREADTEST","GETREQUESTR RECEIVED FOR SUMMARY");
+        Log.d("THREADTEST", "SUMMARY RESPONSE: " + httpRequestMaker.jsonObjFromRequest.toString());
+    }
+
+
+    public void setActiveUserString( int userNumber )
+    {
+        switch( userNumber )
+        {
+            case 1:
+                Log.d("THREADTEST", "active user is: 1");
+                activeUser = UUIDForUser1;
+                break;
+
+            case 2:
+                Log.d("THREADTEST", "active user is: 2");
+                activeUser = UUIDForUser2;
+                break;
+
+            case 3:
+                activeUser = UUIDForUser3;
+                break;
+
+            case 4:
+                activeUser = UUIDForUser4;
+                break;
+        }
 
     }
 
