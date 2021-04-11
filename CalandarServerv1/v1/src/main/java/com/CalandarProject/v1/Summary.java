@@ -6,7 +6,17 @@ public class Summary {
     int[] completeCounter, incompleteCounter, clearCounter, highestStreak;
     int currentStreak1, currentStreak2, currentStreak3, currentStreak4, numActivities, highestOverallStreak;
 
+    /*
+     * Initialization constructor that gets all information for a specified user within a specified date range
+     *
+     * @param integer value of first day in date range
+     *
+     * @param integer value of last day in date range
+     *
+     * @param ID of user to get information on
+     */
     public Summary(int startDate, int endDate, String user) {
+       // initialize variables
        summaryPeriod = new DayData[endDate - startDate + 1];
        completeCounter = new int[4];
        incompleteCounter = new int[4];
@@ -50,6 +60,11 @@ public class Summary {
        }
     }
 
+    /*
+     * Takes the information of a single day and updates summary data accordingly
+     *
+     * @param DayData object to be analyzed
+     */
     private void analyzeDay(DayData day) {
 
          // check for first activity complete
@@ -88,6 +103,7 @@ public class Summary {
          // activity 2
          if (day.getActivity2DayStatus() == "3") {
              completeCounter[1]++;
+             currentStreak2++;
              if (currentStreak2 > highestStreak[1]) {
                  highestStreak[1] = currentStreak2;
              }
@@ -113,6 +129,7 @@ public class Summary {
          // activity 3
          if (day.getActivity3DayStatus() == "3") {
              completeCounter[2]++;
+             currentStreak3++;
              if (currentStreak3 > highestStreak[2]) {
                  highestStreak[2] = currentStreak3;
              }
@@ -138,6 +155,7 @@ public class Summary {
          // activity 4
          if (day.getActivity4DayStatus() == "3") {
              completeCounter[3]++;
+             currentStreak4++;
              if (currentStreak4 > highestStreak[3]) {
                  highestStreak[3] = currentStreak4;
              }
@@ -161,11 +179,15 @@ public class Summary {
          }
     }
 
+    /*
+     * getter methods that return needed summary information
+     */
+
     public int[] getCompleteCounter() {
         return completeCounter;
     }
 
-    public int[] getIncompelteCounter() {
+    public int[] getIncompleteCounter() {
         return incompleteCounter;
     }
 
