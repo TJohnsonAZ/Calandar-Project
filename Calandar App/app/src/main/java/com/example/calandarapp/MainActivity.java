@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -111,13 +113,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
+
         //the integer param represents the function to run in the thread, this object not used for that.
         //this object only used for making put requests, just havent changed the name yet.
         httpRequestMaker = new httpRequest( this, 0, 0);
 
         httpRequestMaker.tryHTTPGetRequest("http://142.11.236.52:8080/summary?startDate=8&endDate=10&user=21a1fab7-b82b-4098-9676-6433ae14962f");
 
-        Log.d( "SUMMARY: " ,"" + (httpRequestMaker.jsonObjFromRequest).toString() );
+
+        //Log.d( "SUMMARY: " ,"" + (httpRequestMaker.jsonObjFromRequest).toString() );
 
         //prevents dark mode from doing anything
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -470,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d("USERTEST", "ID: " + jsonObjectPost.get("userID").toString());
 
-        ((TextView)findViewById(R.id.USERIDDISPLAY)).setText(jsonObjectPost.toString());
+        //((TextView)findViewById(R.id.USERIDDISPLAY)).setText(jsonObjectPost.toString());
 
     }
 
@@ -605,16 +611,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void nonCompletedDayButton( View view ) throws JSONException {
-        
+
+        //get month number as string
         String dayNumberAsString = dayClickedOn.getText().toString();
 
+        //convert day number to int
         int dayNumberAsInt = Integer.parseInt(dayNumberAsString);
 
         int monthNameAsNumber = calandar.monthNameToNum.get( calandar.getCurrentMonthName() );
 
         Calendar randCalendar = Calendar.getInstance();
 
-        randCalendar.set(2021, monthNameAsNumber, dayNumberAsInt);
+        randCalendar.set( 2021, monthNameAsNumber, dayNumberAsInt );
 
         int dayOfYear = randCalendar.get(Calendar.DAY_OF_YEAR);
 
@@ -894,8 +902,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void GETREQUESTGOTTEN()
     {
-        Log.d("THREADTEST","GETREQUESTR RECEIVED FOR SUMMARY");
-        Log.d("THREADTEST", "SUMMARY RESPONSE: " + httpRequestMaker.jsonObjFromRequest.toString());
+        Log.d("THREADTEST","GETREQUEST RECEIVED FOR SUMMARY");
+        Log.d("THREADTEST", "SUMMARY RESPONSE: " + httpRequestMaker.jsonObjFromRequest.toString() );
     }
 
 
@@ -923,6 +931,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+    public void goBackToLoginScreen(View view)
+    {
+        Intent intent = new Intent(this, UserLoginScreen.class);
+        startActivity(intent);
+        Log.d("THREADTEST22", "BACKBUTTONPRESSED");
+    }
+
+    /*
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            // do something on back.
+            Intent intent = new Intent(this, UserLoginScreen.class);
+            startActivity(intent);
+            Log.d("THREADTEST22", "BACKBUTTONPRESSED");
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+    */
+
+
 
 
 }
