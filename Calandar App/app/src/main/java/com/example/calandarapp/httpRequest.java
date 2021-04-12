@@ -114,6 +114,7 @@ public class httpRequest extends Thread
                             @Override
                             public void run() {
                                 ourMainAct.GETREQUESTGOTTEN();
+                                Log.d("success OBJ: ",jsonObjFromRequest.toString());
                             }
                         });
                     }

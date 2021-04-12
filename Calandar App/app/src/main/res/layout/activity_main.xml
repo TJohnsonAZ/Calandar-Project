@@ -595,16 +595,13 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/loadingbutton"
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Clear Calendar"
-        android:onClick="clearCal"/>
-
-    <TextView
-        android:id="@+id/USERIDDISPLAY"
-        android:layout_width="match_parent"
-        android:layout_height="172dp" />
+        android:background="@color/Black"
+        android:onClick="goBackToLoginScreen"
+        android:text="Go Back To User Screen"
+        app:backgroundTint="@color/Black" />
 
 
 </LinearLayout>
