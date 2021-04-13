@@ -1,5 +1,5 @@
 
-package com.CalandarProject.v1;
+package com.CalandarProject.v1.Calendar;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
