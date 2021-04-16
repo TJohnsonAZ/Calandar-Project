@@ -122,9 +122,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         httpRequestMaker.tryHTTPGetRequest("http://142.11.236.52:8080/summary?startDate=8&endDate=10&user=21a1fab7-b82b-4098-9676-6433ae14962f");
 
-
-        //Log.d( "SUMMARY: " ,"" + (httpRequestMaker.jsonObjFromRequest).toString() );
-
         //prevents dark mode from doing anything
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -145,8 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d("USERTEST", "UserNumInMain: " + userNumberString);
 
-
-
         //create a new activity for the user
         activity1 = new Activity(calandarNameFromUser, 1);
 
@@ -158,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         tryGetRequestThreadAndLoadCal();
 
-        Log.d("Cal name", " " + calandarNameFromUser);
+        Log.d("Cal name", " " + calandarNameFromUser );
 
         TextView calandarNameTitle = (TextView)findViewById(R.id.calendarName);
 
@@ -382,7 +377,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         calandar.nextMonth();
         addIdsToDayId();
         monthName = findViewById(R.id.monthYear);
-        monthName.setText(calandar.getCurrentMonthName() + " " + calandar.getCurrentYear());
+        monthName.setText(calandar.getCurrentMonthName() + " " + calandar.getCurrentYear() );
+
         int index;
         startingDay = calandar.getStartingDay(calandar.getCurrentYear(), calandar.getCurrentMonthName());
         for(index = 0; index < startingDay ; index++)
@@ -414,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         monthName = findViewById(R.id.monthYear);
 
-        monthName.setText(calandar.getCurrentMonthName() + " " + calandar.getCurrentYear());
+        monthName.setText(calandar.getCurrentMonthName() + " " + calandar.getCurrentYear() );
 
         int index;
 
@@ -597,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             TextView calandarNameTitle = (TextView)findViewById(R.id.calendarName);
 
-            calandarNameTitle.setText("Activity: " + anActivity.activityName);
+            calandarNameTitle.setText("Activity: " + anActivity.activityName+ " User: " + userNumber);
 
             chooseActivityWindow.dismiss();
 
