@@ -1,7 +1,7 @@
 package com.CalandarProject.v1.Summary;
 
-import com.CalandarProject.v1.dayData.DayData;
-import com.CalandarProject.v1.dayData.DayDatabase;
+import com.CalandarProject.v1.DayData.DayData;
+import com.CalandarProject.v1.DayData.DayDatabase;
 
 public class Summary {
 
@@ -71,7 +71,7 @@ public class Summary {
     private void analyzeDay(DayData day) {
 
          // check for first activity complete
-         if (day.getActivity1DayStatus() == "3") {
+         if (day.getActivity1DayStatus().equals("3")) {
              completeCounter[0]++;
              currentStreak1++;
              if (currentStreak1 > highestStreak[0]) {
@@ -80,13 +80,13 @@ public class Summary {
          }
 
          // otherwise, check for incomplete
-         else if (day.getActivity1DayStatus() == "2") {
+         else if (day.getActivity1DayStatus().equals("2")) {
              incompleteCounter[0]++;
              currentStreak1 = 0;
          }
 
          // otherwise, check for not marked
-         else if (day.getActivity1DayStatus() == "1") {
+         else if (day.getActivity1DayStatus().equals("1")) {
              clearCounter[0]++;
              currentStreak1 = 0;
          }
@@ -104,7 +104,7 @@ public class Summary {
           */
 
          // activity 2
-         if (day.getActivity2DayStatus() == "3") {
+         if (day.getActivity2DayStatus().equals("3")) {
              completeCounter[1]++;
              currentStreak2++;
              if (currentStreak2 > highestStreak[1]) {
@@ -112,12 +112,12 @@ public class Summary {
              }
          }
 
-         else if (day.getActivity2DayStatus() == "2") {
+         else if (day.getActivity2DayStatus().equals("2")) {
              incompleteCounter[1]++;
              currentStreak2 = 0;
          }
 
-         else if (day.getActivity2DayStatus() == "1") {
+         else if (day.getActivity2DayStatus().equals("1")) {
              clearCounter[1]++;
              currentStreak2 = 0;
          }
@@ -130,7 +130,7 @@ public class Summary {
          }
 
          // activity 3
-         if (day.getActivity3DayStatus() == "3") {
+         if (day.getActivity3DayStatus().equals("3")) {
              completeCounter[2]++;
              currentStreak3++;
              if (currentStreak3 > highestStreak[2]) {
@@ -138,12 +138,12 @@ public class Summary {
              }
          }
 
-         else if (day.getActivity3DayStatus() == "2") {
+         else if (day.getActivity3DayStatus().equals("2")) {
              incompleteCounter[2]++;
              currentStreak3 = 0;
          }
 
-         else if (day.getActivity3DayStatus() == "1") {
+         else if (day.getActivity3DayStatus().equals("1")) {
              clearCounter[2]++;
              currentStreak3 = 0;
          }
@@ -156,7 +156,7 @@ public class Summary {
          }
 
          // activity 4
-         if (day.getActivity4DayStatus() == "3") {
+         if (day.getActivity4DayStatus().equals("3")) {
              completeCounter[3]++;
              currentStreak4++;
              if (currentStreak4 > highestStreak[3]) {
@@ -164,12 +164,12 @@ public class Summary {
              }
          }
 
-         else if (day.getActivity4DayStatus() == "2") {
+         else if (day.getActivity4DayStatus().equals("2")) {
              incompleteCounter[3]++;
              currentStreak4 = 0;
          }
 
-         else if (day.getActivity4DayStatus() == "1") {
+         else if (day.getActivity4DayStatus().equals("1")) {
              clearCounter[3]++;
              currentStreak4 = 0;
          }
