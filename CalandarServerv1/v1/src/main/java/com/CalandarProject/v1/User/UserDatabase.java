@@ -34,4 +34,10 @@ public class UserDatabase {
 			return userData;
 		}
 		
+		
+		//purely for testing
+		public static void resetUsers() {
+			userData = new ArrayList<User>();
+		}
+		
 }

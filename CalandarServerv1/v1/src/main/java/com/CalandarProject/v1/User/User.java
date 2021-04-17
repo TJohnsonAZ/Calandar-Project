@@ -53,4 +53,8 @@ public class User {
 		return new String[] {username, userID}; 
 	}
 	
+	public boolean equals( User otherUser ) {
+		return username.equals( otherUser.username ) && userID.equals( otherUser.userID );
+	}
+	
 }

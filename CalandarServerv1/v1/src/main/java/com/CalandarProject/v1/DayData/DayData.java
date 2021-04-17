@@ -11,6 +11,7 @@ public class DayData {
 		
 	public DayData() {
 		this.user = "";
+		this.dayOfYear = "1";
 		this.activity1DayStatus = "1";
 		this.activity2DayStatus = "1";
 		this.activity3DayStatus = "1";
@@ -30,6 +31,10 @@ public class DayData {
 		this();
 		this.dayOfYear = dayNum;
 		this.user = user;
+		this.activity1DayStatus = "1";
+		this.activity2DayStatus = "1";
+		this.activity3DayStatus = "1";
+		this.activity4DayStatus = "1";
 	}
 
 	public String getUser() {

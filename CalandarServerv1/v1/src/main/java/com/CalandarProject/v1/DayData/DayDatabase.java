@@ -45,4 +45,10 @@ public class DayDatabase {
 	public static List<DayData> getAllDayData() {
 		return data;
 	}
+	
+	//for testing
+	public static void resetDays(){
+		data = new ArrayList<DayData>();
+	}
+	
 }
