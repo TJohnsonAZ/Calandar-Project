@@ -1,4 +1,4 @@
-package com.CalandarProject.v1.Tests;
+package com.CalandarProject.v1.DayData;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -9,8 +9,12 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.CalandarProject.v1.dayData.DayData;
+import com.CalandarProject.v1.DayData.*;
+import com.CalandarProject.v1.User.*;
+
+import java.util.*;
 
 class DayDataTests {
 	
@@ -161,21 +165,69 @@ class DayDataTests {
 	
 	@Test
 	void dayDataDatabaseAdd() {
-		System.out.println("Placeholder for Database Add");
+		DayDatabase.resetDays();
+		DayData testDay = new DayData( "test", "444", "1", "2", "3", "4" );
+		DayDatabase.addDayData(testDay);
+		DayData addedDay = DayDatabase.addDayData( testDay );
+		assert( testDay.getUser().equals( addedDay.getUser() ) &&
+				testDay.getDayOfYear().equals( addedDay.getDayOfYear()) &&
+				testDay.getActivity1DayStatus().equals(addedDay.getActivity1DayStatus() ) &&
+				testDay.getActivity2DayStatus().equals(addedDay.getActivity2DayStatus()) &&
+				testDay.getActivity3DayStatus().equals(addedDay.getActivity3DayStatus()) &&
+				testDay.getActivity4DayStatus().equals(addedDay.getActivity4DayStatus())
+				);
+		System.out.println( "Day added successfully" );
 	}
 	
 	@Test
 	void dayDataDatabaseUpdate() {
-		System.out.println("Placeholder for Database Update");
+		DayDatabase.resetDays();
+		DayData testDay = new DayData();
+		DayDatabase.addDayData( testDay );
+		DayData passDay = new DayData();
+		passDay.setActivity1DayStatus("2");
+		DayDatabase.updateDayData(testDay.getDayOfYear(), passDay );
+		assert( DayDatabase.getDayData( testDay.getDayOfYear(), testDay.getUser() )
+				.getActivity1DayStatus()
+				.equals( "2" ));
+		System.out.println( "Day successfully updated" );
 	}
 	
 	@Test
 	void dayDataDatabaseGet() {
-		System.out.println("Placeholder for Database Get");
+		DayDatabase.resetDays();
+		DayData testData = DayDatabase.addDayData( new DayData() );
+		assert( testData == DayDatabase.getDayData("1", ""));
+		System.out.println( "Day gotten successfully" );
 	}
 	
 	@Test
 	void dayDataDatabaseUserGet() {
-		System.out.println("Placeholder for Database Get by User");
+		UserDatabase.resetUsers();
+		DayDatabase.resetDays();
+		int index;
+		String[] userIDs = new String[ 100 ];
+		for( index = 0; index < 100; index++ ) {
+			userIDs[ index ] = createUser( index + "" ).getUserID();
+		}
+		List<DayData> testList;
+		List<DayData> output = DayDatabase.getAllDayData();
+		for( index = 0; index < 100; index++ ) {
+			System.out.println( userIDs[ index] );
+			testList = DayDatabase.getDayDataByUser( userIDs[ index ] );
+			assertEquals(365, testList.size() );
+			assertEquals( userIDs[ index ], testList.get( index ).getUser());
+		}
 	}
+	
+	
+	public User createUser( String username) {
+		User user = new User(username);
+		int daysInYear = 365;
+		for(int i = 1; i <= daysInYear; i++) {
+			DayDatabase.addDayData(new DayData(user.getUserID(), String.valueOf(i)));
+		}
+		return 	UserDatabase.addUser(user);
+	}
+
 }
