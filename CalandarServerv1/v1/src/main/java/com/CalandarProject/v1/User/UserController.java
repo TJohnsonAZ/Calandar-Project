@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.CalandarProject.v1.dayData.DayData;
-import com.CalandarProject.v1.dayData.DayDatabase;
+import com.CalandarProject.v1.DayData.DayData;
+import com.CalandarProject.v1.DayData.DayDatabase;
 
 @RestController
 public class UserController {

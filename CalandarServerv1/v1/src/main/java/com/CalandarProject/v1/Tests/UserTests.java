@@ -83,10 +83,15 @@ class UserTests {
 		UserDatabase.resetUsers();
 		User testUser = new User("FailedTest");
 		User passedTest = new User( "PassedTest" );
+		System.out.println( "\ntestUser:" + testUser.toString() );
+		System.out.println( "passedTest" + passedTest.toString() );
 		UserDatabase.addUser( testUser );
+		System.out.println( "Updating testUser..." );
 		UserDatabase.updateUser(testUser.getUserID(), passedTest );
 		assert( !UserDatabase.getUser( testUser.getUserID() ).getUsername().equals( "FailedTest" ) );
-		System.out.println( "User successfully updated" );
+		System.out.println( "testUser:" + testUser.toString() );
+		System.out.println( "passedTest" + passedTest.toString() );
+		System.out.println( "User successfully updated\n" );
 	}
 	
 	@Test
