@@ -46,7 +46,7 @@ public class Summary {
 
        // get number of activities and overall highest streak
        index = 0;
-       while (!loopEnd) {
+       while (!loopEnd && index < 4) {
            if (highestStreak[index] != -1) {
                numActivities++;
 

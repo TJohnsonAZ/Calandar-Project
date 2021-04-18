@@ -3,6 +3,10 @@ package com.CalandarProject.v1.Tests;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import com.CalandarProject.v1.DayData.DayData;
+import com.CalandarProject.v1.DayData.DayDatabase;
+import com.CalandarProject.v1.Summary.Summary;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SummaryTests {
 
@@ -17,33 +21,65 @@ class SummaryTests {
 	}
 
 	@Test
-	void summaryGetCompleteCounter() {
-		System.out.println("Complete Counter Placeholder");
-	}
-	
-	@Test
-	void summaryGetIncompleteCounter() {
-		System.out.println("Incomplete Counter Placeholder");
-	}
-	
-	@Test
-	void summaryGetClearCounter() {
-		System.out.println("Clear Counter Placeholder");
-	}
-	
-	@Test
-	void summaryGetHighestStreak() {
-		System.out.println("Num Activities Placeholder");
-	}
-	
-	@Test
-	void summaryGetNumbActivities() {
-		System.out.println("Highest Overall Streak Placeholder");
-	}
-	
-	@Test
-	void summaryAnalyzeData() { 
-		System.out.println("Analyze Data Placeholder");
-	}
+   void summaryGetCompleteCounter() {
+       DayData day = new DayData("6527", "7", "3", "1", "2", "3");
+       DayDatabase database = new DayDatabase();
+       database.addDayData(day);
+       Summary summary = new Summary(7, 7, "6527");
+       int[] output = summary.getCompleteCounter();
+       assertEquals(1, output[0]);
+   }
 
+	@Test
+   void summaryGetIncompleteCounter() {
+       DayData day = new DayData("6527", "7", "3", "1", "2", "3");
+       DayDatabase database = new DayDatabase();
+       database.addDayData(day);
+       Summary summary = new Summary(7, 7, "6527");
+       int[] output = summary.getIncompleteCounter();
+       assertEquals(1, output[2]);
+   }
+
+	@Test
+   void summaryGetClearCounter() {
+       DayData day = new DayData("6527", "7", "3", "1", "2", "3");
+       DayDatabase database = new DayDatabase();
+       database.addDayData(day);
+       Summary summary = new Summary(7, 7, "6527");
+       int[] output = summary.getClearCounter();
+       assertEquals(1, output[1]);
+   }
+
+	@Test
+   void summaryGetHighestStreak() {
+       DayData day = new DayData("6527", "8", "3", "1", "1", "0");
+       DayDatabase database = new DayDatabase();
+       database.addDayData(day);
+       Summary summary = new Summary(8, 8, "6527");
+       int[] output = new int[4];
+       output = summary.getHighestStreak();
+       assertEquals(0, output[2]);
+   }
+
+	@Test
+   void summaryGetNumActivities() {
+       DayData day = new DayData("6527", "8", "3", "1", "1", "0");
+       DayDatabase database = new DayDatabase();
+       database.addDayData(day);
+       Summary summary = new Summary(8, 8, "6527");
+       int output = summary.getNumActivities();
+       assertEquals(3, output);
+   }
+
+	@Test
+   void summaryGetHighestOverallStreak() {
+       DayData day = new DayData("6527", "7", "3", "1", "2", "3");
+       DayDatabase database = new DayDatabase();
+       database.addDayData(day);
+       day = new DayData("6527", "8", "3", "1", "1", "0");
+       database.addDayData(day);
+       Summary summary = new Summary(7, 8, "6527");
+       int output = summary.getHighestOverallStreak();
+       assertEquals(2, output);
+   }
 }
