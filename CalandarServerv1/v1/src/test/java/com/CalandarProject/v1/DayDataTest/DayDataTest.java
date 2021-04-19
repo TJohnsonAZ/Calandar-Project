@@ -1,22 +1,22 @@
-package com.CalandarProject.v1.Tests;
+package com.CalandarProject.v1.DayDataTest;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.CalandarProject.v1.DayData.*;
-import com.CalandarProject.v1.User.*;
+import com.CalandarProject.v1.DayData.DayData;
+import com.CalandarProject.v1.DayData.DayDatabase;
+import com.CalandarProject.v1.User.User;
+import com.CalandarProject.v1.User.UserDatabase;
 
-import java.util.*;
-
-class DayDataTests {
+class DayDataTest {
 	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -124,38 +124,6 @@ class DayDataTests {
 		else {
 			System.out.println("			Pass");
 		}
-	}
-	
-	@Test
-	@CsvSource({
-		"1", "101", "1", "1", "1", "1",
-		"1", "102", "2", "2", "1", "1",
-		"1", "103", "3", "2", "2", "1"
-	})
-//	void dayDataCSVRead(String userID, String day, String activity1, String activity2, 
-//			String activity3, String activity4) {
-		
-	void dayDataCSVRead() {
-		System.out.println("Placeholder for CSV Read");
-		
-//		String[] items = new String[] {userID, day, activity1, activity2, activity3, activity4};
-//		String[] ddItems = new String[6];
-//		DayData dd = new DayData(userID, day, activity1, activity2, activity3, activity4);
-//		ddItems[0] = dd.getUser();
-//		ddItems[1] = dd.getDayOfYear();
-//		ddItems[2] = dd.getActivity1DayStatus();
-//		ddItems[3] = dd.getActivity2DayStatus();
-//		ddItems[4] = dd.getActivity3DayStatus();
-//		ddItems[5] = dd.getActivity4DayStatus();
-//		assertArrayEquals(items, ddItems);
-//		System.out.print("dayData CSV read: ");
-//		
-//		if(ddItems.equals(items)) {
-//			System.out.println("Pass");
-//		}
-//		else {
-//			fail("Fail");
-//		}
 	}
 	
 	@Test

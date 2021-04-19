@@ -1,12 +1,14 @@
-package com.CalandarProject.v1.Summary;
+package com.CalandarProject.v1.SummaryTest;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.Test;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import com.CalandarProject.v1.DayData.DayData;
 import com.CalandarProject.v1.DayData.DayDatabase;
+import com.CalandarProject.v1.Summary.Summary;
 
 public class SummaryTest {
 
