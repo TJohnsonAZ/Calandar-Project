@@ -3,32 +3,15 @@ package com.example.calandarapp;
 import android.util.Log;
 import android.widget.TextView;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
-
-import androidx.test.espresso.DataInteraction;
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.CoordinatesProvider;
-import androidx.test.espresso.action.GeneralClickAction;
-import androidx.test.espresso.action.Press;
-import androidx.test.espresso.action.Tap;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.rule.GrantPermissionRule;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
@@ -57,10 +40,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestUserNumber
@@ -71,68 +50,101 @@ public class TestUserNumber
 
 
     @Test
-    public void testUserNumber()
-    {
-        Log.d("RunningTest!!!","asd");
+    public void userMonthCheck() {
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.user1), withText("User 1"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialButton.perform(click());
 
-        ViewInteraction userOneButton = onView(ViewMatchers.withId(R.id.user1));
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.nameCalandarTextField),
+                        childAtPosition(
+                                allOf(withId(R.id.mainmenuid),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        appCompatEditText.perform(replaceText("jo"), closeSoftKeyboard());
 
-        userOneButton.perform(ViewActions.click());
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.nameCalandarTextField), withText("jo"),
+                        childAtPosition(
+                                allOf(withId(R.id.mainmenuid),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        appCompatEditText2.perform(pressImeActionButton());
 
-        ViewInteraction  firstCalendarNameTextView = onView(ViewMatchers.withId(R.id.nameCalandarTextField));
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.CreateFirstCalButton), withText("Create My First Calandar!"),
+                        childAtPosition(
+                                allOf(withId(R.id.mainmenuid),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        materialButton2.perform(click());
 
+        ViewInteraction materialTextView = onView(
+                allOf(withId(android.R.id.title), withText("Confirm"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialTextView.perform(click());
 
-        firstCalendarNameTextView.perform(ViewActions.typeText("jogging"));
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.monthYear), withText("January 2021"),
+                        withParent(withParent(withId(R.id.mainactivityid))),
+                        isDisplayed()));
+        textView.check(matches(withText("January 2021")));
 
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.nextMonth), withText("Next"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.mainactivityid),
+                                        1),
+                                2),
+                        isDisplayed()));
+        materialButton3.perform(click());
 
-        firstCalendarNameTextView.perform(ViewActions.closeSoftKeyboard());
-
-
-        ViewInteraction  createMyFirstCalendarButton = onView(ViewMatchers.withId(R.id.CreateFirstCalButton));
-
-
-        createMyFirstCalendarButton.perform(ViewActions.click());
-
-
-
-        //DataInteraction confirmCalNameButton = Espresso.onData(ViewMatchers.withId(R.id.confirmNamePopupBttn));
-
-        //confirmCalNameButton.perform(ViewActions.click());
-
-        clickXY(10, 500 );
-
-        /*
-        ViewInteraction  confirmCalNameButton = Espresso.onView(ViewMatchers.withId(R.id.confirmNamePopupBttn));
-
-        confirmCalNameButton.perform(ViewActions.click());
-        */
-        /*
-        ViewInteraction activityNameAndUserTextView = Espresso.onView(ViewMatchers.withId(R.id.calendarName));
-
-        activityNameAndUserTextView.check(ViewAssertions.matches(ViewMatchers.withText("Activity: jogging User: 1")));
-
-         */
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.monthYear), withText("February 2021"),
+                        withParent(withParent(withId(R.id.mainactivityid))),
+                        isDisplayed()));
+        textView2.check(matches(withText("February 2021")));
     }
 
-    public static ViewAction clickXY(final int x, final int y){
-        return new GeneralClickAction(
-                Tap.SINGLE,
-                new CoordinatesProvider() {
-                    @Override
-                    public float[] calculateCoordinates(View view) {
 
-                        final int[] screenPos = new int[2];
-                        view.getLocationOnScreen(screenPos);
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
 
-                        final float screenX = screenPos[0] + x;
-                        final float screenY = screenPos[1] + y;
-                        float[] coordinates = {screenX, screenY};
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo( description );
+            }
 
-                        return coordinates;
-                    }
-                },
-                Press.FINGER);
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
     }
-
-
 }
+
